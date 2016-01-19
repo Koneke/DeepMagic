@@ -4,13 +4,14 @@
 
 	public class Cancellable
 	{
-		Thread t;
-		System.Func<object[], bool> action;
-		System.Action<object[]> onFinish;
-		System.Action<object[]> onCancel;
-		System.Action<object[]> onAnyEnd;
-		CancellationTokenSource tokenSource;
-		CancellationToken token;
+		public int Interval;
+		private Thread thread;
+		private System.Func<object[], bool> action;
+		private System.Action<object[]> onFinish;
+		private System.Action<object[]> onCancel;
+		private System.Action<object[]> onAnyEnd;
+		private CancellationTokenSource tokenSource;
+		private CancellationToken token;
 
 		public Cancellable(
 			System.Func<object[], bool> action,
@@ -18,6 +19,7 @@
 			System.Action<object[]> onCancel = null,
 			System.Action<object[]> onAnyEnd = null
 		) {
+			this.Interval = 100;
 			this.action = action;
 			this.onFinish = onFinish;
 			this.onCancel = onCancel;
@@ -26,9 +28,25 @@
 			this.token = tokenSource.Token;
 		}
 
+		public Cancellable(
+			int interval,
+			System.Func<object[], bool> action,
+			System.Action<object[]> onFinish = null,
+			System.Action<object[]> onCancel = null,
+			System.Action<object[]> onAnyEnd = null
+		) {
+			this.Interval = interval;
+			this.action = action;
+			this.onFinish = onFinish;
+			this.onCancel = onCancel;
+			this.onAnyEnd = onAnyEnd;
+			this.tokenSource = new CancellationTokenSource();
+			this.token = this.tokenSource.Token;
+		}
+
 		public void Cancel()
 		{
-			tokenSource.Cancel();
+			this.tokenSource.Cancel();
 		}
 
 		public bool HasCanceled;
@@ -37,8 +55,8 @@
 
 		public void Run(params object[] args)
 		{
-			t = new Thread(() => internalRun(args));
-			t.Start();
+			this.thread = new Thread(() => this.internalRun(args));
+			this.thread.Start();
 		}
 
 		private void internalRun(object[] args)
@@ -46,36 +64,36 @@
 			while (true)
 			{
 				// If cancelled
-				if (token.IsCancellationRequested)
+				if (this.token.IsCancellationRequested)
 				{
-					if (onCancel != null)
+					if (this.onCancel != null)
 					{
-						onCancel(args);
+						this.onCancel(args);
 					}
-					HasCanceled = true;
+					this.HasCanceled = true;
 					break;
 				}
 
 				// If finished
 				if (!this.action(args))
 				{
-					if (onFinish != null)
+					if (this.onFinish != null)
 					{
-						onFinish(args);
+						this.onFinish(args);
 					}
-					HasFinished = true;
+					this.HasFinished = true;
 					break;
 				}
 
-				Thread.Sleep(100);
+				Thread.Sleep(this.Interval);
 			}
 
-			if (onAnyEnd != null)
+			if (this.onAnyEnd != null)
 			{
-				onAnyEnd(args);
+				this.onAnyEnd(args);
 			}
 
-			HasEnded = true;
+			this.HasEnded = true;
 		}
 	}
 }

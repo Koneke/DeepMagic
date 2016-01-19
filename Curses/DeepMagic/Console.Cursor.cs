@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace Deep.Magic
 {
+	using System.Collections.Generic;
+
 	// Yes, it's sort of ugly to do this, but I prefer the semantics this way
 	// (with Console.Cursor)
 	// And logically it's a part of Console really.
