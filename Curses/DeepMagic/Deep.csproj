@@ -7,7 +7,7 @@
     <ProjectGuid>{E0B4F705-6501-4AF9-894B-1BB006D6941C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Deep</RootNamespace>
+    <RootNamespace>Deep.Magic</RootNamespace>
     <AssemblyName>Deep</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cancellable.cs" />
+    <Compile Include="Console.cs" />
+    <Compile Include="ConsoleCursor.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

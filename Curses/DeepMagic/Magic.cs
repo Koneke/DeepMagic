@@ -1,32 +1,36 @@
-﻿namespace Deep
+﻿namespace Deep.Magic
 {
 	using System;
 	using System.Runtime.InteropServices;
 	using System.Text;
 
-	public class Magic
+	public enum Color
 	{
-		public enum Color
-		{
-			Black = 0x00,
-			HalfBlue = 0x01,
-			VeryBlue = 0x01 | 0x08,
-			HalfGreen = 0x02,
-			VeryGreen = 0x02 | 0x08,
-			HalfRed = 0x04,
-			VeryRed = 0x04 | 0x08,
-			HalfTurquoise = 0x01 | 0x02,
-			VeryTurquoise = 0x01 | 0x02 | 0x08,
-			HalfPurple = 0x01 | 0x04,
-			VeryPurple = 0x01 | 0x04 | 0x08,
-			HalfBrown = 0x02 | 0x04,
-			VeryBrown = 0x02 | 0x04 | 0x08,
-			HalfWhite = 0x01 | 0x02 | 0x04,
-			VeryWhite = 0x01 | 0x02 | 0x04 | 0x08,
-		}
+		Black = 0x00,
+		HalfBlue = 0x01,
+		VeryBlue = 0x01 | 0x08,
+		HalfGreen = 0x02,
+		VeryGreen = 0x02 | 0x08,
+		HalfRed = 0x04,
+		VeryRed = 0x04 | 0x08,
+		HalfTurquoise = 0x01 | 0x02,
+		VeryTurquoise = 0x01 | 0x02 | 0x08,
+		HalfPurple = 0x01 | 0x04,
+		VeryPurple = 0x01 | 0x04 | 0x08,
+		HalfBrown = 0x02 | 0x04,
+		VeryBrown = 0x02 | 0x04 | 0x08,
+		HalfWhite = 0x01 | 0x02 | 0x04,
+		VeryWhite = 0x01 | 0x02 | 0x04 | 0x08,
+	}
 
+	public static class Constants
+	{
+		public const int StdInput = -10;
 		public const int StdOutput = -11;
+	}
 
+	public class Bindings
+	{
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern bool AddConsoleAlias(
 			string source,
@@ -242,6 +246,7 @@
 		public static extern bool ReadConsoleInput(
 			IntPtr hConsoleInput,
 			[Out] InputRecord[] lpBuffer,
+			//out InputRecord[] lpBuffer,
 			uint nLength,
 			out uint lpNumberOfEventsRead
 		);
