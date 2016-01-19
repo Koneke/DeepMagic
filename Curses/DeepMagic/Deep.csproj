@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Cancellable.cs" />
     <Compile Include="Console.cs" />
-    <Compile Include="ConsoleCursor.cs" />
-    <Compile Include="ConsoleStatic.cs" />
+    <Compile Include="Console.Cursor.cs" />
+    <Compile Include="Console.Static.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

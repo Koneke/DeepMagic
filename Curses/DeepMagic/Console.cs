@@ -4,7 +4,6 @@
 
 	public partial class Console
 	{
-
 		// Magic
 		public IntPtr InputHandle;
 		public IntPtr OutputHandle;
