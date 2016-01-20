@@ -5,6 +5,12 @@
 	public class Cancellable
 	{
 		public int Interval;
+
+		public bool IsCancelling { get; private set; }
+		public bool HasCanceled { get; private set; }
+		public bool HasFinished { get; private set; }
+		public bool HasEnded { get; private set; }
+
 		private Thread thread;
 		private System.Func<object[], bool> action;
 		private System.Action<object[]> onFinish;
@@ -47,11 +53,8 @@
 		public void Cancel()
 		{
 			this.tokenSource.Cancel();
+			this.IsCancelling = true;
 		}
-
-		public bool HasCanceled;
-		public bool HasFinished;
-		public bool HasEnded;
 
 		public void Run(params object[] args)
 		{
@@ -92,7 +95,6 @@
 			{
 				this.onAnyEnd(args);
 			}
-
 			this.HasEnded = true;
 		}
 	}

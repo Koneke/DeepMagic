@@ -4,14 +4,10 @@
 
 	class Program
 	{
-		public static bool Run;
-
 		static void Main(string[] args)
 		{
 			var console = new Console();
 			console.Clear();
-
-			Program.Run = true;
 
 			Cancellable cancellable = new Cancellable(
 				20, // 20 ms between each poll
@@ -25,19 +21,26 @@
 
 			cancellable.Run(console);
 
+			/*List<ConsoleKey> keys = new List<ConsoleKey>();
+			List<ConsoleKey> keysLastFrame = new List<ConsoleKey>();
 			while(Program.Run) {
-				Console.MessageQueue.ForEach(k => Program.Run = Program.Run && k.KeyChar != 'q');
-			}
+				lock (Console.MessageQueue)
+				{
+					keys.Clear();
+					while (Console.MessageQueue.Count > 0)
+					{
+						keys.Add(Console.MessageQueue.Dequeue());
+					}
+				}
 
-			console
-				.Cursor.SetForegroundColor(Color.VeryWhite)
-				.Cursor.SetPosition(0, 0)
-				.Write("We outta here!");
+				if (keys.Any(k => ConsoleKey.Compare(k, "s-q")))
+				{
+					break;
+				}
+			}*/
 
-			// Stop polling input.
-			cancellable.Cancel();
-
-			System.Console.ReadLine();
+			var game = new Game();
+			game.Run();
 		}
 	}
 }
