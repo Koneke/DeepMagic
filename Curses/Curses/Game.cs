@@ -35,7 +35,7 @@
 		{
 			if (ConsoleKey.Pressed("d"))
 			{
-				playerCharacter.Brain.Dance();
+				this.playerCharacter.Brain.Dance();
 				this.run = false;
 			}
 		}
