@@ -15,7 +15,7 @@
 			{
 				if (System.Console.KeyAvailable)
 				{
-					var rawKey = System.Console.ReadKey();
+					var rawKey = System.Console.ReadKey(true);
 
 					var key = new ConsoleKey(
 						rawKey.KeyChar,
@@ -66,6 +66,14 @@
 			lock (ConsoleKey.messageQueue)
 			{
 				return ConsoleKey.messageQueue.Any(key => ConsoleKey.Compare(key, shorthand));
+			}
+		}
+
+		public static void Clear()
+		{
+			lock (ConsoleKey.messageQueue)
+			{
+				ConsoleKey.messageQueue.Clear();
 			}
 		}
 	}

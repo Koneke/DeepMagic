@@ -1,5 +1,4 @@
-﻿
-namespace Deep.Magic
+﻿namespace Deep.Magic
 {
 	public class ConsoleCursor
 	{
@@ -60,6 +59,12 @@ namespace Deep.Magic
 		public ConsoleCursor(Console console)
 		{
 			this._console = console;
+		}
+
+		public Console SetColor(ushort color)
+		{
+			this.Color = color;
+			return this._console;
 		}
 
 		public Console SetColor(Deep.Magic.Color foreground, Deep.Magic.Color background)

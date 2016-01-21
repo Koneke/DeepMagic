@@ -4,7 +4,7 @@
 
 	public class Cancellable
 	{
-		public int Interval;
+		private int interval;
 
 		public bool IsCancelling { get; private set; }
 		public bool HasCanceled { get; private set; }
@@ -25,7 +25,7 @@
 			System.Action<object[]> onCancel = null,
 			System.Action<object[]> onAnyEnd = null
 		) {
-			this.Interval = 100;
+			this.interval = 100;
 			this.action = action;
 			this.onFinish = onFinish;
 			this.onCancel = onCancel;
@@ -41,7 +41,7 @@
 			System.Action<object[]> onCancel = null,
 			System.Action<object[]> onAnyEnd = null
 		) {
-			this.Interval = interval;
+			this.interval = interval;
 			this.action = action;
 			this.onFinish = onFinish;
 			this.onCancel = onCancel;
@@ -88,7 +88,10 @@
 					break;
 				}
 
-				Thread.Sleep(this.Interval);
+				if (this.interval != -1)
+				{
+					Thread.Sleep(this.interval);
+				}
 			}
 
 			if (this.onAnyEnd != null)

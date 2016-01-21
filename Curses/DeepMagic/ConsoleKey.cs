@@ -1,8 +1,5 @@
 ﻿namespace Deep.Magic
 {
-	using System.Collections.Generic;
-	using System.Linq;
-
 	public partial class ConsoleKey
 	{
 		public char KeyChar;

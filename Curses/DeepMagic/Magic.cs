@@ -20,7 +20,31 @@
 		HalfBrown = 0x02 | 0x04,
 		VeryBrown = 0x02 | 0x04 | 0x08,
 		HalfWhite = 0x01 | 0x02 | 0x04,
-		VeryWhite = 0x01 | 0x02 | 0x04 | 0x08,
+		VeryWhite = 0x01 | 0x02 | 0x04 | 0x08
+	}
+
+	public static class Utilities
+	{
+		private static Random random = new Random();
+
+		public static ushort GetRandomColor(bool foreground, bool background)
+		{
+			ushort fg = (ushort)random.Next(0, 0xf);
+			ushort bg = (ushort)(random.Next(0, 0xf) * 0x10);
+			ushort result = 0;
+
+			if (foreground)
+			{
+				result |= fg; 
+			}
+
+			if (background)
+			{
+				result |= bg; 
+			}
+
+			return result;
+		}
 	}
 
 	public static class Constants
