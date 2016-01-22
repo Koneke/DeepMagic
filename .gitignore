@@ -1,6 +1,8 @@
 build
 Makefile.local
+*.suo
 *.swp
+*.swo
 *tags
 Debug
 debug
