@@ -34,8 +34,11 @@
 
 		protected virtual void Initialise()
 		{
+			this.console = new Console(80, 25)
+			{
+				IsCursorVisible = false
+			};
 			this.random = new System.Random();
-			this.console = new Console(80, 25);
 			this.playerCharacter = new Character();
 			this.currentLevel = new Level();
 		}
