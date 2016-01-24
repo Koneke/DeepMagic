@@ -1,7 +1,8 @@
 ﻿namespace Deep.Magic
 {
+	using Deep.Magic.Implementations.Rogue;
 	using System.Collections.Generic;
-	using System.Linq;
+
 	class Level
 	{
 		public IList<Character> Characters;
@@ -13,7 +14,22 @@
 		private Console console;
 		private bool run;
 		private Character playerCharacter;
-		private RogueLevel currentLevel;
+		private ILevel currentLevel;
+
+		private void RenderLevel()
+		{
+			for (var x = 0; x < currentLevel.Size.X; x++)
+			for (var y = 0; y < currentLevel.Size.Y; y++)
+			{
+				var tile = (RogueTile)currentLevel.TileAt(new Coordinate(x, y));
+				if (tile != null)
+				{
+					this.console
+						.Cursor.SetPosition((short)x, (short)y)
+						.Write(tile.Appearance);
+				}
+			}
+		}
 
 		public void Run()
 		{
@@ -32,6 +48,8 @@
 			}
 		}
 
+		private ILevelGenerator levelGenerator;
+
 		protected virtual void Initialise()
 		{
 			this.console = new Console(80, 25)
@@ -40,7 +58,17 @@
 			};
 			this.random = new System.Random();
 			this.playerCharacter = new Character();
-			this.currentLevel = new RogueLevel(this.console);
+
+			var generatorParameters = new LevelGeneratorParameters()
+				.SetParameter(RogueLevelGenerator.ParameterNames.LevelWidth, 80)
+				.SetParameter(RogueLevelGenerator.ParameterNames.LevelHeight, 25)
+				.SetParameter(RogueLevelGenerator.ParameterNames.MaxRooms, 9)
+				.SetParameter(RogueLevelGenerator.ParameterNames.HorizontalCellCount, 3)
+				.SetParameter(RogueLevelGenerator.ParameterNames.VerticalCellCount, 3);
+
+			this.levelGenerator = new RogueLevelGenerator(generatorParameters);
+			this.currentLevel = this.levelGenerator.Generate();
+			this.RenderLevel();
 		}
 
 		protected virtual void Update()
@@ -48,7 +76,8 @@
 			if (ConsoleKey.Pressed("d"))
 			{
 				this.console.Clear();
-				RogueLevel.DoCorridors(RogueLevel.DoRooms());
+				this.currentLevel = this.levelGenerator.Generate();
+				this.RenderLevel();
 			}
 
 			if (ConsoleKey.Pressed("s-q"))

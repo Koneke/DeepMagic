@@ -46,7 +46,6 @@
     <Compile Include="Character.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IBrain.cs" />
-    <Compile Include="ILevelGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,9 +53,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeepMagic\Deep.csproj">
+    <ProjectReference Include="..\DeepMagicImplementations\DeepMagicImplementations.csproj">
+      <Project>{0401385b-43a1-407e-b039-8c26b28e7360}</Project>
+      <Name>DeepMagicImplementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeepMagic\DeepMagic.csproj">
       <Project>{e0b4f705-6501-4af9-894b-1bb006d6941c}</Project>
-      <Name>Deep</Name>
+      <Name>DeepMagic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

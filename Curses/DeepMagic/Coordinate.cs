@@ -26,5 +26,16 @@
 		{
 			return new Coordinate(a.X + b.X, a.Y + b.Y);
 		}
+
+		public static Coordinate operator -(Coordinate a, Coordinate b)
+		{
+			return new Coordinate(a.X - b.X, a.Y - b.Y);
+		}
+
+		public static int AbsoluteDistance(Coordinate a, Coordinate b)
+		{
+			var difference = a - b;
+			return System.Math.Abs(difference.X) + System.Math.Abs(difference.Y);
+		}
 	}
 }

@@ -73,6 +73,12 @@
 
 		public void Clear(Deep.Magic.Color clearColor = Deep.Magic.Color.Black)
 		{
+			for (var x = 0; x < width; x++)
+			for (var y = 0; y < height; y++)
+			{
+				this.buffer[ x, y ] = new ScreenCharacter('\0', 0);
+			}
+
 			uint charactersWritten;
 			Bindings.FillConsoleOutputAttribute(
 				this.OutputHandle,

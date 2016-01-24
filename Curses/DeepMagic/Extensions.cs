@@ -18,6 +18,69 @@
 			}
 		}
 
+		public static T SelectRandom<T>(
+			this IList<T> source,
+			bool shortCircuit,
+			params Func<T, bool>[] conditions
+		) {
+			var result = new List<T>();
+
+			foreach (T element in source)
+			{
+				bool failed = false;
+				foreach (Func<T, bool> condition in conditions)
+				{
+					if (!condition(element))
+					{
+						failed = true;
+						if (shortCircuit)
+						{
+							// Break so we don't evaluate the other conditions.
+							break;
+						}
+					}
+				}
+
+				if (!failed)
+				{
+					result.Add(element);
+				}
+			}
+
+			if (result.Count == 0)
+			{
+				throw new Exception("No valid element.");
+			}
+
+			return result.Shuffle()[ 0 ];
+		}
+
+		public static List<Tuple<T, int>> RunTimeLengthEncoding<T>(this IList<T> source) where T : IComparable
+		{
+			var result = new List<Tuple<T, int>>();
+			var list = new List<T>(source);
+
+			int length = 1;
+			T current = list[ 0 ];
+			for (var i = 1; i < list.Count; i++)
+			{
+				if (list[ i ].Equals(current))
+				{
+					length += 1;
+				}
+				else
+				{
+					result.Add(Tuple.Create(current, length));
+					current = list[ i ];
+					length = 1;
+				}
+			}
+
+			result.Add(Tuple.Create(current, length));
+
+			return result;
+		}
+
 		public static List<string> EzSplit(this string s, string separator, bool removeEmpty = true)
 		{
 			return s.Split(
