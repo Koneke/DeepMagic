@@ -2,9 +2,6 @@
 {
 	public class Coordinate
 	{
-		public int X;
-		public int Y;
-
 		public Coordinate(int x, int y)
 		{
 			this.X = x;
@@ -17,10 +14,9 @@
 			this.Y = coordinate.Y;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("{0}, {1}", this.X, this.Y);
-		}
+		public int X { get; private set; }
+
+		public int Y { get; private set; }
 
 		public static Coordinate operator +(Coordinate a, Coordinate b)
 		{
@@ -36,6 +32,11 @@
 		{
 			var difference = a - b;
 			return System.Math.Abs(difference.X) + System.Math.Abs(difference.Y);
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}, {1}", this.X, this.Y);
 		}
 	}
 }

@@ -6,12 +6,6 @@
 	public class Cancellable
 	{
 		private int interval;
-
-		public bool IsCancelling { get; private set; }
-		public bool HasCanceled { get; private set; }
-		public bool HasFinished { get; private set; }
-		public bool HasEnded { get; private set; }
-
 		private Thread thread;
 		private Func<object[], bool> action;
 		private Action<object[]> onFinish;
@@ -24,15 +18,9 @@
 			Func<object[], bool> action,
 			Action<object[]> onFinish = null,
 			Action<object[]> onCancel = null,
-			Action<object[]> onAnyEnd = null
-		) {
-			this.interval = 100;
-			this.action = action;
-			this.onFinish = onFinish;
-			this.onCancel = onCancel;
-			this.onAnyEnd = onAnyEnd;
-			this.tokenSource = new CancellationTokenSource();
-			this.token = tokenSource.Token;
+			Action<object[]> onAnyEnd = null)
+			: this(100, action, onFinish, onCancel, onAnyEnd)
+		{
 		}
 
 		public Cancellable(
@@ -40,8 +28,8 @@
 			Func<object[], bool> action,
 			Action<object[]> onFinish = null,
 			Action<object[]> onCancel = null,
-			Action<object[]> onAnyEnd = null
-		) {
+			Action<object[]> onAnyEnd = null)
+		{
 			this.interval = interval;
 			this.action = action;
 			this.onFinish = onFinish;
@@ -51,6 +39,14 @@
 			this.token = this.tokenSource.Token;
 		}
 
+		public bool IsCancelling { get; private set; }
+
+		public bool HasCanceled { get; private set; }
+
+		public bool HasFinished { get; private set; }
+
+		public bool HasEnded { get; private set; }
+
 		public void Cancel()
 		{
 			this.tokenSource.Cancel();
@@ -59,11 +55,11 @@
 
 		public void Run(params object[] args)
 		{
-			this.thread = new Thread(() => this.internalRun(args));
+			this.thread = new Thread(() => this.InternalRun(args));
 			this.thread.Start();
 		}
 
-		private void internalRun(object[] args)
+		private void InternalRun(object[] args)
 		{
 			while (true)
 			{
@@ -74,6 +70,7 @@
 					{
 						this.onCancel(args);
 					}
+
 					this.HasCanceled = true;
 					break;
 				}
@@ -85,6 +82,7 @@
 					{
 						this.onFinish(args);
 					}
+
 					this.HasFinished = true;
 					break;
 				}
@@ -99,6 +97,7 @@
 			{
 				this.onAnyEnd(args);
 			}
+
 			this.HasEnded = true;
 		}
 	}

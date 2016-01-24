@@ -3,30 +3,28 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
-	public class RogueLevelGenerator : ILevelGenerator
+	public partial class RogueLevelGenerator : ILevelGenerator
 	{
-		public static class ParameterNames
-		{
-			public const string LevelWidth = "level-width";
-			public const string LevelHeight = "level-height";
-			public const string HorizontalCellCount = "horizontal-cell-count";
-			public const string VerticalCellCount = "vertical-cell-count";
-			public const string MaxRooms = "max-rooms";
-		}
-
 		private ILevelGeneratorParameters parameters;
-		public ILevelGeneratorParameters Parameters { get { return this.parameters; } }
 
 		public RogueLevelGenerator(ILevelGeneratorParameters parameters)
 		{
 			this.parameters = parameters;
 		}
 
+		public ILevelGeneratorParameters Parameters
+		{
+			get
+			{
+				return this.parameters;
+			}
+		}
+
 		public ILevel Generate()
 		{
 			var rogueLevel = new RogueLevel(new Coordinate(
-				Parameters.GetParameter<int>(ParameterNames.LevelWidth),
-				Parameters.GetParameter<int>(ParameterNames.LevelHeight)));
+				this.Parameters.GetParameter<int>(ParameterNames.LevelWidth),
+				this.Parameters.GetParameter<int>(ParameterNames.LevelHeight)));
 
 			this.DoRooms(rogueLevel);
 			this.DoCorridors(rogueLevel);
@@ -34,35 +32,40 @@
 			return rogueLevel;
 		}
 
-		void DoRooms(RogueLevel level)
+		private void DoRooms(RogueLevel level)
 		{
-			int MaxRooms = Parameters.GetParameter<int>(ParameterNames.MaxRooms);
-			int MaxWidth = level.Size.X / Parameters.GetParameter<int>(ParameterNames.HorizontalCellCount);
-			int MaxHeight = level.Size.Y / Parameters.GetParameter<int>(ParameterNames.VerticalCellCount);
+			int maxRooms = this.Parameters.GetParameter<int>(ParameterNames.MaxRooms);
+			int horizontalCellCount = this.Parameters.GetParameter<int>(ParameterNames.HorizontalCellCount);
+			int verticalCellCount = this.Parameters.GetParameter<int>(ParameterNames.VerticalCellCount);
 
-			for (var i = 0; i < MaxRooms; i++)
+			int maxWidth = level.Size.X / horizontalCellCount;
+			int maxHeight = level.Size.Y / verticalCellCount;
+
+			for (var i = 0; i < maxRooms; i++)
 			{
-				var topX = (i % 3) * MaxWidth + 1;
-				int topY = (i / 3) * MaxHeight;
+				var topX = ((i % 3) * maxWidth) + 1;
+				int topY = (i / 3) * maxHeight;
 
 				var margin = 2; // Make sure there's some space between rooms.
-				var roomWidth = Random.Next(4, MaxWidth - margin);
-				var roomHeight = Random.Next(4, MaxHeight - margin);
-				var positionX = topX + Random.Next(0, -margin + MaxWidth - roomWidth);
-				var positionY = topY + Random.Next(0, -margin + MaxHeight - roomHeight);
+				var roomWidth = Random.Next(4, maxWidth - margin);
+				var roomHeight = Random.Next(4, maxHeight - margin);
+				var positionX = topX + Random.Next(0, -margin + maxWidth - roomWidth);
+				var positionY = topY + Random.Next(0, -margin + maxHeight - roomHeight);
 
 				if (positionX < 1)
 				{
 					roomWidth--;
 					positionX = 1;
 				}
+
 				if (positionY < 1)
 				{
 					roomHeight--;
 					positionY = 1;
 				}
 
-				level.Rooms.Add(new RogueLevel.Room {
+				level.Rooms.Add(new RogueLevel.Room
+				{
 					InGraph = false,
 					Cell = new Coordinate(i % 3, i / 3),
 					Position = new Coordinate(positionX, positionY),
@@ -73,10 +76,12 @@
 			foreach (var room in level.Rooms)
 			{
 				for (var x = 0; x < room.Size.X; x++)
-				for (var y = 0; y < room.Size.Y; y++)
 				{
-					var tile = new RogueTile('.', 0x07);
-					level.SetTile(room.Position + new Coordinate(x, y), tile);
+					for (var y = 0; y < room.Size.Y; y++)
+					{
+						var tile = new Tile('.', 0x07);
+						level.SetTile(room.Position + new Coordinate(x, y), tile);
+					}
 				}
 			}
 		}
@@ -86,7 +91,8 @@
 			RogueLevel.Room first = null;
 			RogueLevel.Room second = null;
 
-			var connect = new System.Action<RogueLevel.Room, RogueLevel.Room>((a, b) => {
+			var connect = new System.Action<RogueLevel.Room, RogueLevel.Room>((a, b) =>
+			{
 				b.InGraph = true;
 				a.ConnectedTo.Add(b);
 				b.ConnectedTo.Add(a);
@@ -106,13 +112,14 @@
 
 			var conditions = new List<System.Func<RogueLevel.Room, bool>>();
 
-			var perform = new System.Action<int, bool>((count, randomFirst) => {
+			var perform = new System.Action<int, bool>((count, randomFirst) =>
+			{
 				int left = count;
 				do
 				{
 					if (randomFirst)
 					{
-						first = level.Rooms.Shuffle()[ 0 ];
+						first = level.Rooms.Shuffle()[0];
 					}
 
 					j = 0;
@@ -133,7 +140,10 @@
 					// if we didn't find any room we could connect to at all, shuffle.
 					if (j == 0)
 					{
-						do { first = level.Rooms.Shuffle()[ 0 ]; }
+						do
+						{
+							first = level.Rooms.Shuffle()[0];
+						}
 						while (!first.InGraph);
 					}
 					else
@@ -141,7 +151,8 @@
 						connect(first, second);
 						left--;
 					}
-				} while (left > 0);
+				}
+				while (left > 0);
 			});
 
 			// The order matters, since we short circuit.
@@ -150,10 +161,10 @@
 			conditions.Add(notAlreadyInGraph);
 			conditions.Add(randomMagic);
 
-			first = level.Rooms.Shuffle()[ 0 ];
+			first = level.Rooms.Shuffle()[0];
 			first.InGraph = true;
 
-			perform(parameters.GetParameter<int>(ParameterNames.MaxRooms) - 1, false);
+			perform(this.parameters.GetParameter<int>(ParameterNames.MaxRooms) - 1, false);
 
 			conditions.Clear();
 			conditions.Add(firstCanConnect);
@@ -192,8 +203,9 @@
 				turnDelta = new Coordinate(0, startPoint.Y < endPoint.Y ? 1 : -1);
 				turnLength = System.Math.Abs(startPoint.Y - endPoint.Y);
 			}
-			else // down
+			else
 			{
+				// downward corridor
 				startPoint = new Coordinate(
 					from.Position.X + Random.Next(from.Size.X - 2) + 1,
 					from.Position.Y + from.Size.Y - 1);
@@ -211,7 +223,7 @@
 
 			var current = new Coordinate(startPoint);
 			System.Action drawAtCurrent = () =>
-				level.SetTile(current, new RogueTile('#', 0x02));
+				level.SetTile(current, new Tile('#', 0x02));
 
 			while (distance > 0)
 			{
@@ -230,8 +242,8 @@
 				distance--;
 			}
 
-			level.SetTile(startPoint, new RogueTile('+', 0x07 | 0x08));
-			level.SetTile(endPoint, new RogueTile('+', 0x07 | 0x08));
+			level.SetTile(startPoint, new Tile('+', 0x07 | 0x08));
+			level.SetTile(endPoint, new Tile('+', 0x07 | 0x08));
 		}
 	}
 }

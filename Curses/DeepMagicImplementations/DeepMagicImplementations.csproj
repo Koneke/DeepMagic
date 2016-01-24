@@ -7,7 +7,7 @@
     <ProjectGuid>{0401385B-43A1-407E-B039-8C26B28E7360}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeepMagicImplementations</RootNamespace>
+    <RootNamespace>Deep.Magic.Implementations</RootNamespace>
     <AssemblyName>DeepMagicImplementations</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,6 +50,9 @@
       <Project>{e0b4f705-6501-4af9-894b-1bb006d6941c}</Project>
       <Name>DeepMagic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RogueLevelGenerator.ParameterNames.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,7 +10,7 @@
 		{
 			var box = new byte[1];
 			provider.GetBytes(box);
-			return box[ 0 ] % maxValue;
+			return box[0] % maxValue;
 		}
 
 		public static int Next(int minValue, int maxValue)

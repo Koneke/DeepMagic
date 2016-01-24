@@ -13,28 +13,28 @@
 
 		public T GetParameter<T>(string parameterName)
 		{
-			if (!parameters.ContainsKey(typeof(T)))
+			if (!this.parameters.ContainsKey(typeof(T)))
 			{
 				throw new System.Exception("Non-existant parameter or incorrect type.");
 			}
 
 			var key = parameterName.ToLower();
-			if (!parameters[typeof(T)].ContainsKey(key))
+			if (!this.parameters[typeof(T)].ContainsKey(key))
 			{
 				throw new System.Exception("Non-existant parameter or incorrect type.");
 			}
 
-			return (T)parameters[typeof(T)][key];
+			return (T)this.parameters[typeof(T)][key];
 		}
 
 		public ILevelGeneratorParameters SetParameter<T>(string parameterName, T parameterValue)
 		{
-			if (!parameters.ContainsKey(typeof(T)))
+			if (!this.parameters.ContainsKey(typeof(T)))
 			{
-				parameters.Add(typeof(T), new Dictionary<string, object>());
+				this.parameters.Add(typeof(T), new Dictionary<string, object>());
 			}
 
-			parameters[typeof(T)].Add(parameterName.ToLower(), parameterValue);
+			this.parameters[typeof(T)].Add(parameterName.ToLower(), parameterValue);
 
 			return this;
 		}

@@ -2,35 +2,44 @@
 {
 	public class ConsoleCursor
 	{
-		private readonly Console _console;
+		private readonly Console console;
 
-		private short _x;
+		private short x;
+
+		private short y;
+
+		public ConsoleCursor(Console console)
+		{
+			this.console = console;
+		}
+
+		public ushort Color { get; set; }
+
 		public short X
 		{
 			get
 			{
-				return this._x;
+				return this.x;
 			}
+
 			set
 			{
-				this.SetPosition(value, this._y);
+				this.SetPosition(value, this.y);
 			}
 		}
 
-		private short _y;
 		public short Y
 		{
 			get
 			{
-				return this._y;
+				return this.y;
 			}
+
 			set
 			{
-				this.SetPosition(this._x, value);
+				this.SetPosition(this.x, value);
 			}
 		}
-
-		public ushort Color;
 
 		public Deep.Magic.Color ForegroundColor
 		{
@@ -38,6 +47,7 @@
 			{
 				return (Deep.Magic.Color)(this.Color & 0x0f);
 			}
+
 			set
 			{
 				this.Color = (ushort)(((ushort)this.BackgroundColor * 0x10) | (ushort)value);
@@ -50,41 +60,37 @@
 			{
 				return (Deep.Magic.Color)((this.Color & 0xf0) / 0x10);
 			}
+
 			set
 			{
 				this.Color = (ushort)((ushort)this.ForegroundColor | ((ushort)value * 0x10));
 			}
 		}
 
-		public ConsoleCursor(Console console)
-		{
-			this._console = console;
-		}
-
 		public Console SetColor(ushort color)
 		{
 			this.Color = color;
-			return this._console;
+			return this.console;
 		}
 
 		public Console SetColor(Deep.Magic.Color foreground, Deep.Magic.Color background)
 		{
 			this.ForegroundColor = foreground;
 			this.BackgroundColor = background;
-			return this._console;
+			return this.console;
 		}
 
 		// Just wrappers, for the sake of chaining.
 		public Console SetForegroundColor(Deep.Magic.Color foreground)
 		{
 			this.ForegroundColor = foreground;
-			return this._console;
+			return this.console;
 		}
 
 		public Console SetBackgroundColor(Deep.Magic.Color background)
 		{
 			this.BackgroundColor = background;
-			return this._console;
+			return this.console;
 		}
 
 		public Console SetPosition(Coordinate coordinate)
@@ -94,19 +100,19 @@
 
 		public Console SetPosition(short x, short y)
 		{
-			this._x = x;
-			this._y = y;
+			this.x = x;
+			this.y = y;
 			Deep.Magic.Bindings.SetConsoleCursorPosition(
-				this._console.OutputHandle,
+				this.console.OutputHandle,
 				new Deep.Magic.Bindings.Coord { X = x, Y = y });
 
-			return this._console;
+			return this.console;
 		}
 
 		public Console Move(short x, short y)
 		{
-			this.SetPosition((short)(this._x + x), (short)(this._y + y));
-			return this._console;
+			this.SetPosition((short)(this.x + x), (short)(this.y + y));
+			return this.console;
 		}
 	}
 }

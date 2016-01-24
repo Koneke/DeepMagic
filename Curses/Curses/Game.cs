@@ -1,42 +1,22 @@
 ﻿namespace Deep.Magic
 {
 	using Deep.Magic.Implementations.Rogue;
-	using System.Collections.Generic;
 
-	class Level
-	{
-		public IList<Character> Characters;
-	}
-
-	class Game
+	public class Game
 	{
 		private System.Random random;
 		private Console console;
 		private bool run;
 		private Character playerCharacter;
+		private ILevelGenerator levelGenerator;
 		private ILevel currentLevel;
-
-		private void RenderLevel()
-		{
-			for (var x = 0; x < currentLevel.Size.X; x++)
-			for (var y = 0; y < currentLevel.Size.Y; y++)
-			{
-				var tile = (RogueTile)currentLevel.TileAt(new Coordinate(x, y));
-				if (tile != null)
-				{
-					this.console
-						.Cursor.SetPosition((short)x, (short)y)
-						.Write(tile.Appearance);
-				}
-			}
-		}
 
 		public void Run()
 		{
 			this.run = true;
 			this.Initialise();
 
-			while(this.run)
+			while (this.run)
 			{
 				ConsoleKey.PollInput(this.console);
 
@@ -47,8 +27,6 @@
 				ConsoleKey.Clear();
 			}
 		}
-
-		private ILevelGenerator levelGenerator;
 
 		protected virtual void Initialise()
 		{
@@ -83,6 +61,24 @@
 			if (ConsoleKey.Pressed("s-q"))
 			{
 				this.run = false;
+			}
+		}
+
+		// To be deprecated in favour of ILevelRenderer when that's a thing.
+		protected virtual void RenderLevel()
+		{
+			for (var x = 0; x < this.currentLevel.Size.X; x++)
+			{
+				for (var y = 0; y < this.currentLevel.Size.Y; y++)
+				{
+					var tile = this.currentLevel.TileAt(new Coordinate(x, y));
+					if (tile != null)
+					{
+						this.console
+							.Cursor.SetPosition((short)x, (short)y)
+							.Write(tile.Appearance);
+					}
+				}
 			}
 		}
 	}

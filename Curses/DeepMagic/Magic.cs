@@ -12,6 +12,17 @@
 
 	public class Bindings
 	{
+		public delegate bool ConsoleCtrlDelegate(CtrlTypes ctrlType);
+
+		public enum CtrlTypes : uint
+		{
+			CtrlCEvent = 0,
+			CtrlBreakEvent,
+			CtrlCloseEvent,
+			CtrlLogoffEvent = 5,
+			CtrlShutdownEvent
+		}
+
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern bool AddConsoleAlias(
 			string source,
@@ -176,8 +187,6 @@
 		public static extern IntPtr GetStdHandle(
 			int nStdHandle);
 
-		public delegate bool ConsoleCtrlDelegate(CtrlTypes ctrlType);
-
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool PeekConsoleInput(
 			IntPtr hConsoleInput,
@@ -197,7 +206,6 @@
 		public static extern bool ReadConsoleInput(
 			IntPtr hConsoleInput,
 			[Out] InputRecord[] lpBuffer,
-			//out InputRecord[] lpBuffer,
 			uint nLength,
 			out uint lpNumberOfEventsRead);
 
@@ -403,20 +411,20 @@
 
 			public Colorref(System.Drawing.Color color)
 			{
-				ColorDWORD = color.R + ((uint)color.G << 8) + ((uint)color.B << 16);
+				this.ColorDWORD = color.R + ((uint)color.G << 8) + ((uint)color.B << 16);
 			}
 
 			public System.Drawing.Color GetColor()
 			{
 				return System.Drawing.Color.FromArgb(
-					(int)(0x000000FFU & ColorDWORD),
-					(int)(0x0000FF00U & ColorDWORD) >> 8,
-					(int)(0x00FF0000U & ColorDWORD) >> 16);
+					(int)(0x000000FFU & this.ColorDWORD),
+					(int)(0x0000FF00U & this.ColorDWORD) >> 8,
+					(int)(0x00FF0000U & this.ColorDWORD) >> 16);
 			}
 
 			public void SetColor(System.Drawing.Color color)
 			{
-				ColorDWORD = color.R + ((uint)color.G << 8) + ((uint)color.B << 16);
+				this.ColorDWORD = color.R + ((uint)color.G << 8) + ((uint)color.B << 16);
 			}
 		}
 
@@ -435,8 +443,8 @@
 			public Coord dwFontSize;
 			public ushort FontFamily;
 			public ushort FontWeight;
-			private fixed char FaceName[(int)LfFacesize];
-			private const uint LfFacesize = 32;
+			private const int LfFacesize = 32;
+			private fixed char faceName[LfFacesize];
 		} 
 
 		[StructLayout(LayoutKind.Explicit)]
@@ -448,7 +456,7 @@
 			[FieldOffset(4)] public WindowBufferSizeRecord WindowBufferSizeEvent;
 			[FieldOffset(4)] public MenuEventRecord MenuEvent;
 			[FieldOffset(4)] public FocusEventRecord FocusEvent;
-		};
+		}
 
 		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 		public struct KeyEventRecord
@@ -487,7 +495,7 @@
 
 			public WindowBufferSizeRecord(short x, short y)
 			{
-				DwSize = new Coord
+				this.DwSize = new Coord
 				{
 					X = x,
 					Y = y
@@ -538,15 +546,6 @@
 			private readonly uint Flags;
 			private readonly Coord SelectionAnchor;
 			private readonly SmallRect Selection;
-		}
-
-		public enum CtrlTypes : uint
-		{
-			CtrlCEvent = 0,
-			CtrlBreakEvent,
-			CtrlCloseEvent,
-			CtrlLogoffEvent = 5,
-			CtrlShutdownEvent
 		}
 	}
 }
