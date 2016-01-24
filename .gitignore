@@ -1,6 +1,9 @@
 build
 Makefile.local
 *.suo
+.suo
+.cache
+*.cache
 *.swp
 *.swo
 *tags
