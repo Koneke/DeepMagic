@@ -4,49 +4,6 @@
 	using System.Runtime.InteropServices;
 	using System.Text;
 
-	public enum Color
-	{
-		Black = 0x00,
-		HalfBlue = 0x01,
-		VeryBlue = 0x01 | 0x08,
-		HalfGreen = 0x02,
-		VeryGreen = 0x02 | 0x08,
-		HalfRed = 0x04,
-		VeryRed = 0x04 | 0x08,
-		HalfTurquoise = 0x01 | 0x02,
-		VeryTurquoise = 0x01 | 0x02 | 0x08,
-		HalfPurple = 0x01 | 0x04,
-		VeryPurple = 0x01 | 0x04 | 0x08,
-		HalfBrown = 0x02 | 0x04,
-		VeryBrown = 0x02 | 0x04 | 0x08,
-		HalfWhite = 0x01 | 0x02 | 0x04,
-		VeryWhite = 0x01 | 0x02 | 0x04 | 0x08
-	}
-
-	public static class Utilities
-	{
-		private static Random random = new Random();
-
-		public static ushort GetRandomColor(bool foreground, bool background)
-		{
-			ushort fg = (ushort)random.Next(0, 0xf);
-			ushort bg = (ushort)(random.Next(0, 0xf) * 0x10);
-			ushort result = 0;
-
-			if (foreground)
-			{
-				result |= fg; 
-			}
-
-			if (background)
-			{
-				result |= bg; 
-			}
-
-			return result;
-		}
-	}
-
 	public static class Constants
 	{
 		public const int StdInput = -10;
@@ -59,16 +16,14 @@
 		public static extern bool AddConsoleAlias(
 			string source,
 			string target,
-			string exeName
-		);
+			string exeName);
 
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern bool AllocConsole();
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool AttachConsole(
-			uint dwProcessId
-		);
+			uint dwProcessId);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr CreateConsoleScreenBuffer(
@@ -76,8 +31,7 @@
 			uint dwShareMode, 
 			IntPtr lpSecurityAttributes, 
 			uint dwFlags,
-			IntPtr lpScreenBufferData
-		);
+			IntPtr lpScreenBufferData);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool FillConsoleOutputAttribute(
@@ -85,8 +39,7 @@
 			ushort wAttribute, 
 			uint nLength, 
 			Coord dwWriteCoord, 
-			out uint lpNumberOfAttrsWritten
-		);
+			out uint lpNumberOfAttrsWritten);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool FillConsoleOutputCharacter(
@@ -94,13 +47,11 @@
 			char cCharacter,
 			uint nLength,
 			Coord dwWriteCoord,
-			out uint lpNumberOfCharsWritten
-		);
+			out uint lpNumberOfCharsWritten);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool FlushConsoleInputBuffer(
-			IntPtr hConsoleInput
-		);
+			IntPtr hConsoleInput);
 
 		[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
 		public static extern bool FreeConsole();
@@ -108,34 +59,29 @@
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GenerateConsoleCtrlEvent(
 			uint dwCtrlEvent,
-			uint dwProcessGroupId
-		);
+			uint dwProcessGroupId);
 
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern bool GetConsoleAlias(
 			string source,
 			out StringBuilder targetBuffer,
 			uint targetBufferLength,
-			string exeName
-		);
+			string exeName);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleAliases(
 			StringBuilder[] lpTargetBuffer,
 			uint targetBufferLength,
-			string lpExeName
-		);
+			string lpExeName);
 
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern uint GetConsoleAliasesLength(
-			string exeName
-		);
+			string exeName);
 
 		[DllImport("kernel32", SetLastError = true)]
 		public static extern uint GetConsoleAliasExes(
 			out StringBuilder exeNameBuffer,
-			uint exeNameBufferLength
-		);
+			uint exeNameBufferLength);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleAliasExesLength();
@@ -146,36 +92,30 @@
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleCursorInfo(
 			IntPtr hConsoleOutput,
-			out ConsoleCursorInfo lpConsoleCursorInfo
-		);
+			out ConsoleCursorInfo lpConsoleCursorInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleDisplayMode(
-			out uint modeFlags
-		);
+			out uint modeFlags);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern Coord GetConsoleFontSize(
 			IntPtr hConsoleOutput,
-			int nFont
-		);
+			int nFont);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleHistoryInfo(
-			out ConsoleHistoryInfo consoleHistoryInfo
-		);
+			out ConsoleHistoryInfo consoleHistoryInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleMode(
 			IntPtr hConsoleHandle,
-			out uint lpMode
-		);
+			out uint lpMode);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleOriginalTitle(
 			out StringBuilder consoleTitle,
-			uint size
-		);
+			uint size);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleOutputCP();
@@ -183,31 +123,26 @@
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleProcessList(
 			out uint[] processList,
-			uint processCount
-		);
+			uint processCount);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleScreenBufferInfo(
 			IntPtr hConsoleOutput,
-			out ConsoleScreenBufferInfo lpConsoleScreenBufferInfo
-		);
+			out ConsoleScreenBufferInfo lpConsoleScreenBufferInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleScreenBufferInfoEx(
 			IntPtr hConsoleOutput,
-			ref ConsoleScreenBufferInfoEx consoleScreenBufferInfo
-		);
+			ref ConsoleScreenBufferInfoEx consoleScreenBufferInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetConsoleSelectionInfo(
-			ConsoleSelectionInfo consoleSelectionInfo
-		);
+			ConsoleSelectionInfo consoleSelectionInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern uint GetConsoleTitle(
 			[Out] StringBuilder lpConsoleTitle,
-			uint nSize
-		);
+			uint nSize);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr GetConsoleWindow();
@@ -216,36 +151,30 @@
 		public static extern bool GetCurrentConsoleFont(
 			IntPtr hConsoleOutput,
 			bool bMaximumWindow,
-			out ConsoleFontInfo lpConsoleCurrentFont
-		);
+			out ConsoleFontInfo lpConsoleCurrentFont);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetCurrentConsoleFontEx(
 			IntPtr consoleOutput,
 			bool maximumWindow,
-			out ConsoleFontInfoEx consoleCurrentFont
-		);
+			out ConsoleFontInfoEx consoleCurrentFont);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern Coord GetLargestConsoleWindowSize(
-			IntPtr hConsoleOutput
-		);
+			IntPtr hConsoleOutput);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetNumberOfConsoleInputEvents(
 			IntPtr hConsoleInput,
-			out uint lpcNumberOfEvents
-		);
+			out uint lpcNumberOfEvents);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool GetNumberOfConsoleMouseButtons(
-			ref uint lpNumberOfMouseButtons
-		);
+			ref uint lpNumberOfMouseButtons);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr GetStdHandle(
-			int nStdHandle
-		);
+			int nStdHandle);
 
 		public delegate bool ConsoleCtrlDelegate(CtrlTypes ctrlType);
 
@@ -254,8 +183,7 @@
 			IntPtr hConsoleInput,
 			[Out] InputRecord[] lpBuffer,
 			uint nLength,
-			out uint lpNumberOfEventsRead
-		);
+			out uint lpNumberOfEventsRead);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ReadConsole(
@@ -263,8 +191,7 @@
 			[Out] StringBuilder lpBuffer,
 			uint nNumberOfCharsToRead,
 			out uint lpNumberOfCharsRead,
-			IntPtr lpReserved
-		);
+			IntPtr lpReserved);
 
 		[DllImport("kernel32.dll", EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
 		public static extern bool ReadConsoleInput(
@@ -272,8 +199,7 @@
 			[Out] InputRecord[] lpBuffer,
 			//out InputRecord[] lpBuffer,
 			uint nLength,
-			out uint lpNumberOfEventsRead
-		);
+			out uint lpNumberOfEventsRead);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ReadConsoleOutput(
@@ -281,8 +207,7 @@
 			[Out] CharInfo[] lpBuffer,
 			Coord dwBufferSize,
 			Coord dwBufferCoord,
-			ref SmallRect lpReadRegion
-		);
+			ref SmallRect lpReadRegion);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ReadConsoleOutputAttribute(
@@ -290,8 +215,7 @@
 			[Out] ushort[] lpAttribute,
 			uint nLength,
 			Coord dwReadCoord,
-			out uint lpNumberOfAttrsRead
-		);
+			out uint lpNumberOfAttrsRead);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ReadConsoleOutputCharacter(
@@ -299,8 +223,7 @@
 			[Out] StringBuilder lpCharacter,
 			uint nLength,
 			Coord dwReadCoord,
-			out uint lpNumberOfCharsRead
-		);
+			out uint lpNumberOfCharsRead);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool ScrollConsoleScreenBuffer(
@@ -308,102 +231,85 @@
 			[In] ref SmallRect lpScrollRectangle,
 			IntPtr lpClipRectangle,
 			Coord dwDestinationOrigin,
-			[In] ref CharInfo lpFill
-		);
+			[In] ref CharInfo lpFill);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleActiveScreenBuffer(
-			IntPtr hConsoleOutput
-		);
+			IntPtr hConsoleOutput);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleCP(
-			uint wCodePageId
-		);
+			uint wCodePageId);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleCtrlHandler(
 			ConsoleCtrlDelegate handlerRoutine,
-			bool add
-		);
+			bool add);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleCursorInfo(
 			IntPtr hConsoleOutput,
-			[In] ref ConsoleCursorInfo lpConsoleCursorInfo
-		);
+			[In] ref ConsoleCursorInfo lpConsoleCursorInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleCursorPosition(
 			IntPtr hConsoleOutput,
-			Coord dwCursorPosition
-		);
+			Coord dwCursorPosition);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleDisplayMode(
 			IntPtr consoleOutput,
 			uint flags,
-			out Coord newScreenBufferDimensions
-		);
+			out Coord newScreenBufferDimensions);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleHistoryInfo(
-			ConsoleHistoryInfo consoleHistoryInfo
-		);
+			ConsoleHistoryInfo consoleHistoryInfo);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleMode(
 			IntPtr hConsoleHandle, 
-			uint dwMode
-		);
+			uint dwMode);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleOutputCP(
-			uint wCodePageId
-		);
+			uint wCodePageId);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleScreenBufferInfoEx(
 			IntPtr consoleOutput,
-			ConsoleScreenBufferInfoEx consoleScreenBufferInfoEx
-		);
+			ConsoleScreenBufferInfoEx consoleScreenBufferInfoEx);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleScreenBufferSize(
 			IntPtr hConsoleOutput,
-			Coord dwSize
-		);
+			Coord dwSize);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleTextAttribute(
 			IntPtr hConsoleOutput,
-		   ushort wAttributes
-		);
+			ushort wAttributes);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleTitle(
-			string lpConsoleTitle
-		);
+			string lpConsoleTitle);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetConsoleWindowInfo(
 			IntPtr hConsoleOutput,
 			bool bAbsolute,
-			[In] ref SmallRect lpConsoleWindow
-		);
+			[In] ref SmallRect lpConsoleWindow);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetCurrentConsoleFontEx(
 			IntPtr consoleOutput, 
 			bool maximumWindow,
-			ConsoleFontInfoEx consoleCurrentFontEx
-		);
+			ConsoleFontInfoEx consoleCurrentFontEx);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool SetStdHandle(
 			uint nStdHandle,
-			IntPtr hHandle
-		);
+			IntPtr hHandle);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteConsole(
@@ -411,16 +317,14 @@
 			string lpBuffer,
 			uint nNumberOfCharsToWrite,
 			out uint lpNumberOfCharsWritten,
-			IntPtr lpReserved
-		);
+			IntPtr lpReserved);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteConsoleInput(
 			IntPtr hConsoleInput,
 			InputRecord[] lpBuffer,
 			uint nLength,
-			out uint lpNumberOfEventsWritten
-		);
+			out uint lpNumberOfEventsWritten);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteConsoleOutput(
@@ -428,8 +332,7 @@
 			CharInfo[] lpBuffer,
 			Coord dwBufferSize,
 			Coord dwBufferCoord,
-			ref SmallRect lpWriteRegion
-		);
+			ref SmallRect lpWriteRegion);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteConsoleOutputAttribute(
@@ -437,8 +340,7 @@
 			ushort[] lpAttribute,
 			uint nLength,
 			Coord dwWriteCoord,
-			out uint lpNumberOfAttrsWritten
-		);
+			out uint lpNumberOfAttrsWritten);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteConsoleOutputCharacter(
@@ -446,37 +348,30 @@
 			string lpCharacter, 
 			uint nLength, 
 			Coord dwWriteCoord,
-			out uint lpNumberOfCharsWritten
-		);
+			out uint lpNumberOfCharsWritten);
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Coord
 		{
-
 			public short X;
 			public short Y;
-
 		}
 
 		public struct SmallRect
 		{
-
 			public short Left;
 			public short Top;
 			public short Right;
 			public short Bottom;
-
 		}
 
 		public struct ConsoleScreenBufferInfo
 		{
-
 			public Coord DwSize;
 			public Coord DwCursorPosition;
 			public short WAttributes;
 			public SmallRect SrWindow;
 			public Coord DwMaximumWindowSize;
-
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -643,7 +538,6 @@
 			private readonly uint Flags;
 			private readonly Coord SelectionAnchor;
 			private readonly SmallRect Selection;
-
 		}
 
 		public enum CtrlTypes : uint

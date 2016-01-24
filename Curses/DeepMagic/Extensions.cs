@@ -28,8 +28,9 @@
 		}
 
 		// http://stackoverflow.com/questions/273313/randomize-a-listt-in-c-sharp
-		public static void Shuffle<T>(this IList<T> list)
+		public static IList<T> Shuffle<T>(this IList<T> source)
 		{
+			List<T> list = new List<T>(source);
 			var provider = new RNGCryptoServiceProvider();
 			var n = list.Count;
 
@@ -46,6 +47,8 @@
 				list[k] = list[n];
 				list[n] = value;
 			}
+
+			return list;
 		}
 	}
 }

@@ -93,8 +93,7 @@
 			this._y = y;
 			Deep.Magic.Bindings.SetConsoleCursorPosition(
 				this._console.OutputHandle,
-				new Deep.Magic.Bindings.Coord { X = x, Y = y }
-			);
+				new Deep.Magic.Bindings.Coord { X = x, Y = y });
 
 			return this._console;
 		}

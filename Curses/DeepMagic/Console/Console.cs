@@ -84,7 +84,12 @@
 
 		public Console Write(string text, bool MoveCursor = false)
 		{
-			this.deltas.Add(new Delta(this.Cursor.X, this.Cursor.Y, text, this.Cursor.Color));
+			//this.deltas.Add(new Delta(this.Cursor.X, this.Cursor.Y, text, this.Cursor.Color));
+
+			for (int x = 0; x < text.Length; x++)
+			{
+				this.WriteAt(this.Cursor.X + x, this.Cursor.Y, text[ x ], this.Cursor.Color);
+			}
 
 			if (MoveCursor)
 			{
@@ -94,22 +99,34 @@
 			return this;
 		}
 
-		private bool CheckDelta(Delta change)
+		private void WriteAt(int x, int y, char character, ushort attributes)
 		{
-			for (var x = 0; x < change.Text.Length; x++)
-			{
-				if (this.buffer[ change.X + x, change.Y ].Character != change.Text[ x ])
-				{
-					return true;
-				}
+			Deep.Magic.Bindings.SetConsoleCursorPosition(
+				this.OutputHandle,
+				new Bindings.Coord { X = (short)x, Y = (short)y });
 
-				if (this.buffer[ change.X + x, change.Y ].Attributes != change.Attributes)
-				{
-					return true;
-				}
+			uint trash;
+			if (this.buffer[x, y].Character != character)
+			{
+				Deep.Magic.Bindings.WriteConsole(
+					this.OutputHandle,
+					"" + character,
+					1,
+					out trash,
+					System.IntPtr.Zero);
+				this.buffer[x, y].Character = character;
 			}
 
-			return false;
+			if (this.buffer[x, y].Attributes != attributes)
+			{
+				Bindings.FillConsoleOutputAttribute(
+					this.OutputHandle,
+					attributes,
+					1,
+					new Bindings.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
+					out trash);
+				this.buffer[x, y].Attributes = attributes;
+			}
 		}
 
 		public void Update()
