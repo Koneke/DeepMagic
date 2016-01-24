@@ -87,6 +87,11 @@
 			return this._console;
 		}
 
+		public Console SetPosition(Coordinate coordinate)
+		{
+			return this.SetPosition((short)coordinate.X, (short)coordinate.Y);
+		}
+
 		public Console SetPosition(short x, short y)
 		{
 			this._x = x;

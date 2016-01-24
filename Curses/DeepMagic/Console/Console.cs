@@ -99,6 +99,17 @@
 			return this;
 		}
 
+		public Console Write(char character, bool MoveCursor = false)
+		{
+			this.WriteAt(this.Cursor.X, this.Cursor.Y, character, this.Cursor.Color);
+
+			if (MoveCursor)
+			{
+				this.Cursor.Move(1, 0);
+			}
+			return this;
+		}
+
 		private void WriteAt(int x, int y, char character, ushort attributes)
 		{
 			Deep.Magic.Bindings.SetConsoleCursorPosition(

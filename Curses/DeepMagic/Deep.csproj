@@ -43,14 +43,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cancellable.cs" />
-    <Compile Include="Console.cs" />
-    <Compile Include="ConsoleDelta.cs" />
-    <Compile Include="ConsoleCursor.cs" />
-    <Compile Include="ConsoleKey.cs" />
-    <Compile Include="ConsoleKey.Static.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="Console\Console.cs" />
+    <Compile Include="Console\ConsoleDelta.cs" />
+    <Compile Include="Console\ConsoleCursor.cs" />
+    <Compile Include="Console\ConsoleKey.cs" />
+    <Compile Include="Console\ConsoleKey.Static.cs" />
+    <Compile Include="Coordinate.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RogueLevel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

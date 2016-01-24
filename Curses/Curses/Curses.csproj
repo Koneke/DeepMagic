@@ -46,6 +46,7 @@
     <Compile Include="Character.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IBrain.cs" />
+    <Compile Include="ILevelGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

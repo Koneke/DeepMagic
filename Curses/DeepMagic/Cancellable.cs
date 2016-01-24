@@ -1,5 +1,6 @@
 ﻿namespace Deep.Magic
 {
+	using System;
 	using System.Threading;
 
 	public class Cancellable
@@ -12,18 +13,18 @@
 		public bool HasEnded { get; private set; }
 
 		private Thread thread;
-		private System.Func<object[], bool> action;
-		private System.Action<object[]> onFinish;
-		private System.Action<object[]> onCancel;
-		private System.Action<object[]> onAnyEnd;
+		private Func<object[], bool> action;
+		private Action<object[]> onFinish;
+		private Action<object[]> onCancel;
+		private Action<object[]> onAnyEnd;
 		private CancellationTokenSource tokenSource;
 		private CancellationToken token;
 
 		public Cancellable(
-			System.Func<object[], bool> action,
-			System.Action<object[]> onFinish = null,
-			System.Action<object[]> onCancel = null,
-			System.Action<object[]> onAnyEnd = null
+			Func<object[], bool> action,
+			Action<object[]> onFinish = null,
+			Action<object[]> onCancel = null,
+			Action<object[]> onAnyEnd = null
 		) {
 			this.interval = 100;
 			this.action = action;
@@ -36,10 +37,10 @@
 
 		public Cancellable(
 			int interval,
-			System.Func<object[], bool> action,
-			System.Action<object[]> onFinish = null,
-			System.Action<object[]> onCancel = null,
-			System.Action<object[]> onAnyEnd = null
+			Func<object[], bool> action,
+			Action<object[]> onFinish = null,
+			Action<object[]> onCancel = null,
+			Action<object[]> onAnyEnd = null
 		) {
 			this.interval = interval;
 			this.action = action;
