@@ -241,8 +241,8 @@
 				distance--;
 			}
 
-			level.SetTile(startPoint, new Tile('+', 0x07 | 0x08));
-			level.SetTile(endPoint, new Tile('+', 0x07 | 0x08));
+			level.SetTile(startPoint, new Tile('+', 0x07 | 0x08).AddTags("room", "door"));
+			level.SetTile(endPoint, new Tile('+', 0x07 | 0x08).AddTags("room", "door"));
 		}
 	}
 }

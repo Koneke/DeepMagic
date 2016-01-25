@@ -8,8 +8,12 @@
 
 		bool HasTag(string tag);
 
-		void AddTag(string tag);
+		ITile AddTag(string tag);
 
-		void RemoveTag(string tag);
+		ITile AddTags(params string[] tags);
+
+		ITile RemoveTag(string tag);
+
+		ITile RemoveTags(params string[] tag);
 	}
 }

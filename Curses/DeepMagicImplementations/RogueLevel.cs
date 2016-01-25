@@ -8,7 +8,7 @@
 		public RogueLevel(Coordinate levelSize)
 		{
 			this.Size = levelSize;
-			this.Tiles = new Tile[levelSize.X, levelSize.Y];
+			this.Tiles = new ITile[levelSize.X, levelSize.Y];
 			this.Rooms = new List<Room>();
 			this.Passages = new List<Passage>();
 		}
@@ -26,7 +26,7 @@
 			return this.Tiles[coordinate.X, coordinate.Y];
 		}
 
-		public void SetTile(Coordinate coordinate, Tile tile)
+		public void SetTile(Coordinate coordinate, ITile tile)
 		{
 			this.Tiles[coordinate.X, coordinate.Y] = tile;
 		}
