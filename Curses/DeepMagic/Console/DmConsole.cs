@@ -2,14 +2,14 @@
 {
 	using System.Collections.Generic;
 
-	public partial class Console
+	public partial class DmConsole
 	{
 		private int width;
 		private int height;
 		private ScreenCharacter[,] buffer;
 		private List<Delta> deltas;
 
-		public Console(int width, int height)
+		public DmConsole(int width, int height)
 		{
 			this.InitialiseScreen(width, height);
 
@@ -65,7 +65,7 @@
 				out charactersWritten);
 		}
 
-		public Console Write(string text, bool moveCursor = false)
+		public DmConsole Write(string text, bool moveCursor = false)
 		{
 			for (int x = 0; x < text.Length; x++)
 			{
@@ -80,7 +80,7 @@
 			return this;
 		}
 
-		public Console Write(char character, bool moveCursor = false)
+		public DmConsole Write(char character, bool moveCursor = false)
 		{
 			this.WriteAt(this.Cursor.X, this.Cursor.Y, character, this.Cursor.Color);
 

@@ -2,13 +2,13 @@
 {
 	public class ConsoleCursor
 	{
-		private readonly Console console;
+		private readonly DmConsole console;
 
 		private short x;
 
 		private short y;
 
-		public ConsoleCursor(Console console)
+		public ConsoleCursor(DmConsole console)
 		{
 			this.console = console;
 		}
@@ -67,13 +67,13 @@
 			}
 		}
 
-		public Console SetColor(ushort color)
+		public DmConsole SetColor(ushort color)
 		{
 			this.Color = color;
 			return this.console;
 		}
 
-		public Console SetColor(Deep.Magic.Color foreground, Deep.Magic.Color background)
+		public DmConsole SetColor(Deep.Magic.Color foreground, Deep.Magic.Color background)
 		{
 			this.ForegroundColor = foreground;
 			this.BackgroundColor = background;
@@ -81,24 +81,24 @@
 		}
 
 		// Just wrappers, for the sake of chaining.
-		public Console SetForegroundColor(Deep.Magic.Color foreground)
+		public DmConsole SetForegroundColor(Deep.Magic.Color foreground)
 		{
 			this.ForegroundColor = foreground;
 			return this.console;
 		}
 
-		public Console SetBackgroundColor(Deep.Magic.Color background)
+		public DmConsole SetBackgroundColor(Deep.Magic.Color background)
 		{
 			this.BackgroundColor = background;
 			return this.console;
 		}
 
-		public Console SetPosition(Coordinate coordinate)
+		public DmConsole SetPosition(Coordinate coordinate)
 		{
 			return this.SetPosition((short)coordinate.X, (short)coordinate.Y);
 		}
 
-		public Console SetPosition(short x, short y)
+		public DmConsole SetPosition(short x, short y)
 		{
 			this.x = x;
 			this.y = y;
@@ -109,7 +109,7 @@
 			return this.console;
 		}
 
-		public Console Move(short x, short y)
+		public DmConsole Move(short x, short y)
 		{
 			this.SetPosition((short)(this.x + x), (short)(this.y + y));
 			return this.console;

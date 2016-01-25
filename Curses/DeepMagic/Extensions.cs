@@ -19,6 +19,26 @@
 			}
 		}
 
+		// This might be really dumb, I'm unsure.
+		// Sort of just doing it because I never really used "vanilla" delegates much,
+		// so I took it as a bit of a learning experience.
+		// (At first I made the working overload itself take the Delegate[],
+		// but I'll probably use Func<T, bool> collections more often,
+		// so I let that one remain "primary", and moved the Delegate version here again).
+		public static T SelectRandom<T>(
+			this IList<T> source,
+			bool shortCircuit,
+			params Delegate[] conditions)
+		{
+			var conditionFuncs = conditions
+				.Select(d => new Func<T, bool>(e => (bool)d.DynamicInvoke(e)))
+				.ToArray();
+
+			return source.SelectRandom(
+				shortCircuit,
+				conditionFuncs);
+		}
+
 		public static T SelectRandom<T>(
 			this IList<T> source,
 			bool shortCircuit,

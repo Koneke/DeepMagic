@@ -9,7 +9,7 @@
 
 		// Notice that this is not actually any specific console, it's *the* console.
 		// We currently only support one.
-		public static bool PollInput(Console console)
+		public static bool PollInput(DmConsole console)
 		{
 			lock (messageQueue)
 			{

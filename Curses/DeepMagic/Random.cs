@@ -2,7 +2,7 @@
 {
 	using System.Security.Cryptography;
 
-	public static class Random
+	public static class DmRandom
 	{
 		private static RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
 
@@ -15,7 +15,7 @@
 
 		public static int Next(int minValue, int maxValue)
 		{
-			return Random.Next(maxValue - minValue) + minValue;
+			return DmRandom.Next(maxValue - minValue) + minValue;
 		}
 	}
 }

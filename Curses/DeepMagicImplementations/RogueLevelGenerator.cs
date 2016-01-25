@@ -1,5 +1,6 @@
 ﻿namespace Deep.Magic.Implementations.Rogue
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
@@ -11,6 +12,8 @@
 		{
 			this.parameters = parameters;
 		}
+
+		private delegate bool RoomCondition(RogueLevel.Room room);
 
 		public ILevelGeneratorParameters Parameters
 		{
@@ -47,10 +50,10 @@
 				int topY = (i / 3) * maxHeight;
 
 				var margin = 2; // Make sure there's some space between rooms.
-				var roomWidth = Random.Next(4, maxWidth - margin);
-				var roomHeight = Random.Next(4, maxHeight - margin);
-				var positionX = topX + Random.Next(0, -margin + maxWidth - roomWidth);
-				var positionY = topY + Random.Next(0, -margin + maxHeight - roomHeight);
+				var roomWidth = DmRandom.Next(4, maxWidth - margin);
+				var roomHeight = DmRandom.Next(4, maxHeight - margin);
+				var positionX = topX + DmRandom.Next(0, -margin + maxWidth - roomWidth);
+				var positionY = topY + DmRandom.Next(0, -margin + maxHeight - roomHeight);
 
 				if (positionX < 1)
 				{
@@ -86,33 +89,29 @@
 			}
 		}
 
+		private void Connect(RogueLevel level, RogueLevel.Room a, RogueLevel.Room b)
+		{
+			b.InGraph = true;
+			a.ConnectedTo.Add(b);
+			b.ConnectedTo.Add(a);
+			this.DrawCorridor(level, a, b);
+		}
+
 		private void DoCorridors(RogueLevel level)
 		{
 			RogueLevel.Room first = null;
 			RogueLevel.Room second = null;
 
-			var connect = new System.Action<RogueLevel.Room, RogueLevel.Room>((a, b) =>
-			{
-				b.InGraph = true;
-				a.ConnectedTo.Add(b);
-				b.ConnectedTo.Add(a);
-				this.Connect(level, a, b);
-			});
-
 			var j = 0;
 
-			var notAlreadyConnected = new System.Func<RogueLevel.Room, bool>(
-				target => !first.ConnectedTo.Contains(target));
-			var notAlreadyInGraph = new System.Func<RogueLevel.Room, bool>(
-				target => !target.InGraph);
-			var firstCanConnect = new System.Func<RogueLevel.Room, bool>(
-				target => first.CanConnectTo(target));
-			var randomMagic = new System.Func<RogueLevel.Room, bool>(
-				target => Random.Next(++j) == 0);
+			var notAlreadyConnected = new RoomCondition(target => !first.ConnectedTo.Contains(target));
+			var notAlreadyInGraph   = new RoomCondition(target => !target.InGraph);
+			var firstCanConnect     = new RoomCondition(target => first.CanConnectTo(target));
+			var randomMagic         = new RoomCondition(target => DmRandom.Next(++j) == 0);
 
-			var conditions = new List<System.Func<RogueLevel.Room, bool>>();
+			var conditions = new List<RoomCondition>();
 
-			var perform = new System.Action<int, bool>((count, randomFirst) =>
+			var perform = new Action<int, bool>((count, randomFirst) =>
 			{
 				int left = count;
 				do
@@ -148,7 +147,7 @@
 					}
 					else
 					{
-						connect(first, second);
+						Connect(level, first, second);
 						left--;
 					}
 				}
@@ -171,12 +170,12 @@
 			conditions.Add(notAlreadyConnected);
 			conditions.Add(randomMagic);
 
-			var randomExtras = Random.Next(1, 4);
+			var randomExtras = DmRandom.Next(1, 4);
 
-			perform(Random.Next(1, 4), true);
+			perform(DmRandom.Next(1, 4), true);
 		}
 
-		private void Connect(RogueLevel level, RogueLevel.Room first, RogueLevel.Room second)
+		private void DrawCorridor(RogueLevel level, RogueLevel.Room first, RogueLevel.Room second)
 		{
 			Coordinate startPoint, endPoint, delta, turnDelta;
 			RogueLevel.Room from, to;
@@ -193,10 +192,10 @@
 			{
 				startPoint = new Coordinate(
 					from.Position.X + from.Size.X - 1,
-					from.Position.Y + Random.Next(from.Size.Y - 2) + 1);
+					from.Position.Y + DmRandom.Next(from.Size.Y - 2) + 1);
 				endPoint = new Coordinate(
 					to.Position.X,
-					to.Position.Y + Random.Next(to.Size.Y - 2) + 1);
+					to.Position.Y + DmRandom.Next(to.Size.Y - 2) + 1);
 
 				delta = new Coordinate(1, 0);
 				distance = System.Math.Abs(startPoint.X - endPoint.X) - 1;
@@ -207,10 +206,10 @@
 			{
 				// downward corridor
 				startPoint = new Coordinate(
-					from.Position.X + Random.Next(from.Size.X - 2) + 1,
+					from.Position.X + DmRandom.Next(from.Size.X - 2) + 1,
 					from.Position.Y + from.Size.Y - 1);
 				endPoint = new Coordinate(
-					to.Position.X + Random.Next(to.Size.X - 2) + 1,
+					to.Position.X + DmRandom.Next(to.Size.X - 2) + 1,
 					to.Position.Y);
 
 				delta = new Coordinate(0, 1);
@@ -219,7 +218,7 @@
 				turnLength = System.Math.Abs(startPoint.X - endPoint.X);
 			}
 
-			turnPoint = Random.Next(1, distance - 1);
+			turnPoint = DmRandom.Next(1, distance - 1);
 
 			var current = new Coordinate(startPoint);
 			System.Action drawAtCurrent = () =>

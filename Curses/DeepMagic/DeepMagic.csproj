@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Cancellable.cs" />
     <Compile Include="Console\Color.cs" />
-    <Compile Include="Console\Console.cs" />
+    <Compile Include="Console\DmConsole.cs" />
     <Compile Include="Console\ConsoleDelta.cs" />
     <Compile Include="Console\ConsoleCursor.cs" />
     <Compile Include="Console\ConsoleKey.cs" />

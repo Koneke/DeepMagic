@@ -69,11 +69,14 @@
     </timestamps>
     <violations />
   </sourcecode>
+  <project key="1293173574">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
   <sourcecode name="RogueLevelGenerator.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2016-01-24 18:35:50.781</styleCop>
       <settingsFile>2016-01-24 20:31:56.778</settingsFile>
-      <sourceFile>2016-01-24 21:12:16.846</sourceFile>
+      <sourceFile>2016-01-25 22:25:53.226</sourceFile>
       <parser>2016-01-24 18:35:50.781</parser>
       <StyleCop.CSharp.DocumentationRules>2016-01-24 18:35:50.781</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-1254580582</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -92,7 +95,4 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="1293173574">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
 </stylecopresultscache>

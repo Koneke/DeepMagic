@@ -1,6 +1,6 @@
 ﻿namespace Deep.Magic
 {
-	public partial class Console
+	public partial class DmConsole
 	{
 		// Currently unused because broken.
 		public class Delta

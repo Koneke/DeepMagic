@@ -5,7 +5,7 @@
 	public class Game
 	{
 		private System.Random random;
-		private Console console;
+		private DmConsole console;
 		private bool run;
 		private Character playerCharacter;
 		private ILevelGenerator levelGenerator;
@@ -30,7 +30,7 @@
 
 		protected virtual void Initialise()
 		{
-			this.console = new Console(80, 25)
+			this.console = new DmConsole(80, 25)
 			{
 				IsCursorVisible = false
 			};
