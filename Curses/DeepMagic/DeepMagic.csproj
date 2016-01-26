@@ -51,6 +51,7 @@
     <Compile Include="Console\ConsoleKey.Static.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Level\ILevelRenderer.cs" />
     <Compile Include="Level\ILevel.cs" />
     <Compile Include="Level\ILevelGenerator.cs" />
     <Compile Include="Level\ILevelGeneratorParameters.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Level\Tile.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Random.cs" />
+    <Compile Include="DmRandom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

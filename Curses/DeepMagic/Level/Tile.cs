@@ -6,18 +6,10 @@
 	{
 		private IList<string> tags;
 
-		public Tile(char appearance, short color)
+		public Tile()
 		{
-			this.Appearance = appearance;
-			this.Color = color;
 			this.tags = new List<string>();
 		}
-
-		// This should't really be here, instead, a levelrenderer should
-		// decide on looks and stuff based on tags, I guess?
-		public char Appearance { get; private set; }
-
-		public short Color { get; private set; }
 
 		public bool HasTag(string tag)
 		{

@@ -14,8 +14,8 @@
 			this.InitialiseScreen(width, height);
 
 			this.deltas = new List<Delta>();
-			this.InputHandle = Bindings.GetStdHandle(Deep.Magic.Constants.StdInput);
-			this.OutputHandle = Bindings.GetStdHandle(Deep.Magic.Constants.StdOutput);
+			this.InputHandle = NativeMethods.GetStdHandle(Deep.Magic.Constants.StdInput);
+			this.OutputHandle = NativeMethods.GetStdHandle(Deep.Magic.Constants.StdOutput);
 			this.Cursor = new ConsoleCursor(this);
 			this.Clear();
 		}
@@ -57,11 +57,11 @@
 			}
 
 			uint charactersWritten;
-			Bindings.FillConsoleOutputAttribute(
+			NativeMethods.FillConsoleOutputAttribute(
 				this.OutputHandle,
 				(ushort)clearColor,
 				(uint)(this.width * this.height),
-				new Bindings.Coord { X = 0, Y = 0 },
+				new NativeMethods.Coord { X = 0, Y = 0 },
 				out charactersWritten);
 		}
 
@@ -99,18 +99,18 @@
 				if (delta.Check(this.buffer))
 				{
 					uint charactersWritten;
-					Bindings.WriteConsole(
+					NativeMethods.WriteConsole(
 						this.OutputHandle,
 						delta.Text,
 						(uint)delta.Text.Length,
 						out charactersWritten,
 						System.IntPtr.Zero);
 
-					Bindings.FillConsoleOutputAttribute(
+					NativeMethods.FillConsoleOutputAttribute(
 						this.OutputHandle,
 						delta.Attributes,
 						(uint)delta.Text.Length,
-						new Bindings.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
+						new NativeMethods.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
 						out charactersWritten);
 
 					delta.Write(this.buffer);
@@ -137,14 +137,14 @@
 
 		private void WriteAt(int x, int y, char character, ushort attributes)
 		{
-			Deep.Magic.Bindings.SetConsoleCursorPosition(
+			Deep.Magic.NativeMethods.SetConsoleCursorPosition(
 				this.OutputHandle,
-				new Bindings.Coord { X = (short)x, Y = (short)y });
+				new NativeMethods.Coord { X = (short)x, Y = (short)y });
 
 			uint trash;
 			if (this.buffer[x, y].Character != character)
 			{
-				Deep.Magic.Bindings.WriteConsole(
+				Deep.Magic.NativeMethods.WriteConsole(
 					this.OutputHandle,
 					string.Empty + character,
 					1,
@@ -155,11 +155,11 @@
 
 			if (this.buffer[x, y].Attributes != attributes)
 			{
-				Bindings.FillConsoleOutputAttribute(
+				NativeMethods.FillConsoleOutputAttribute(
 					this.OutputHandle,
 					attributes,
 					1,
-					new Bindings.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
+					new NativeMethods.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
 					out trash);
 				this.buffer[x, y].Attributes = attributes;
 			}

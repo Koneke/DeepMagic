@@ -76,13 +76,28 @@
 				});
 			}
 
+			this.DrawRooms(level);
+		}
+
+		private void DrawRooms(RogueLevel level)
+		{
 			foreach (var room in level.Rooms)
 			{
 				for (var x = 0; x < room.Size.X; x++)
 				{
 					for (var y = 0; y < room.Size.Y; y++)
 					{
-						var tile = new Tile('.', 0x07);
+						ITile tile;
+
+						if (x == 0 || y == 0 || x == room.Size.X - 1 || y == room.Size.Y - 1)
+						{
+							tile = new Tile().AddTags("wall", "visionblocker");
+						}
+						else
+						{
+							tile = new Tile().AddTag("floor");
+						}
+
 						level.SetTile(room.Position + new Coordinate(x, y), tile);
 					}
 				}
@@ -222,7 +237,7 @@
 
 			var current = new Coordinate(startPoint);
 			System.Action drawAtCurrent = () =>
-				level.SetTile(current, new Tile('#', 0x02));
+				level.SetTile(current, new Tile().AddTag("passage"));
 
 			while (distance > 0)
 			{
@@ -241,8 +256,21 @@
 				distance--;
 			}
 
-			level.SetTile(startPoint, new Tile('+', 0x07 | 0x08).AddTags("room", "door"));
-			level.SetTile(endPoint, new Tile('+', 0x07 | 0x08).AddTags("room", "door"));
+			var startDoor = new Tile().AddTag("door");
+			startDoor.AddTag(DmRandom.Next(2) == 0
+				? "open"
+				: "closed");
+
+			level.SetTile(startPoint, startDoor);
+
+			var endDoor = new Tile().AddTag("door");
+			endDoor.AddTag(DmRandom.Next(2) == 0
+				? "open"
+				: "closed");
+
+			level.SetTile(
+				endPoint,
+				endDoor);
 		}
 	}
 }

@@ -102,9 +102,9 @@
 		{
 			this.x = x;
 			this.y = y;
-			Deep.Magic.Bindings.SetConsoleCursorPosition(
+			Deep.Magic.NativeMethods.SetConsoleCursorPosition(
 				this.console.OutputHandle,
-				new Deep.Magic.Bindings.Coord { X = x, Y = y });
+				new Deep.Magic.NativeMethods.Coord { X = x, Y = y });
 
 			return this.console;
 		}

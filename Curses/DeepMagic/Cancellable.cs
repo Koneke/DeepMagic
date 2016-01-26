@@ -3,7 +3,7 @@
 	using System;
 	using System.Threading;
 
-	public class Cancellable
+	public class Cancellable : IDisposable
 	{
 		private int interval;
 		private Thread thread;
@@ -57,6 +57,11 @@
 		{
 			this.thread = new Thread(() => this.InternalRun(args));
 			this.thread.Start();
+		}
+
+		public void Dispose()
+		{
+			this.tokenSource.Dispose();
 		}
 
 		private void InternalRun(object[] args)

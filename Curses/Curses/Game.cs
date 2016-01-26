@@ -4,12 +4,13 @@
 
 	public class Game
 	{
-		private System.Random random;
 		private DmConsole console;
 		private bool run;
 		private Character playerCharacter;
-		private ILevelGenerator levelGenerator;
+
 		private ILevel currentLevel;
+		private ILevelGenerator levelGenerator;
+		private ILevelRenderer levelRenderer;
 
 		public void Run()
 		{
@@ -34,7 +35,6 @@
 			{
 				IsCursorVisible = false
 			};
-			this.random = new System.Random();
 			this.playerCharacter = new Character();
 
 			var generatorParameters = new LevelGeneratorParameters()
@@ -46,7 +46,8 @@
 
 			this.levelGenerator = new RogueLevelGenerator(generatorParameters);
 			this.currentLevel = this.levelGenerator.Generate();
-			this.RenderLevel();
+			this.levelRenderer = new RogueLevelRenderer(this.console, this.currentLevel);
+			this.levelRenderer.RenderLevel();
 		}
 
 		protected virtual void Update()
@@ -55,30 +56,13 @@
 			{
 				this.console.Clear();
 				this.currentLevel = this.levelGenerator.Generate();
-				this.RenderLevel();
+				this.levelRenderer.Level = this.currentLevel;
+				this.levelRenderer.RenderLevel();
 			}
 
 			if (ConsoleKey.Pressed("s-q"))
 			{
 				this.run = false;
-			}
-		}
-
-		// To be deprecated in favour of ILevelRenderer when that's a thing.
-		protected virtual void RenderLevel()
-		{
-			for (var x = 0; x < this.currentLevel.Size.X; x++)
-			{
-				for (var y = 0; y < this.currentLevel.Size.Y; y++)
-				{
-					var tile = this.currentLevel.TileAt(new Coordinate(x, y));
-					if (tile != null)
-					{
-						this.console
-							.Cursor.SetPosition((short)x, (short)y)
-							.Write(tile.Appearance);
-					}
-				}
 			}
 		}
 	}
