@@ -2,6 +2,9 @@
 {
 	using System.Collections.Generic;
 
+	/// <summary>
+	/// Generic ITile implementation.
+	/// </summary>
 	public class Tile : ITile
 	{
 		private IList<string> tags;
