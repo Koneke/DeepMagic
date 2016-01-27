@@ -10,7 +10,7 @@
 
 		private ILevel currentLevel;
 		private ILevelGenerator levelGenerator;
-		private ILevelRenderer levelRenderer;
+		private IGameRenderer renderer;
 
 		public void Run()
 		{
@@ -45,25 +45,46 @@
 				.SetParameter(RogueLevelGenerator.ParameterNames.VerticalCellCount, 3);
 
 			this.levelGenerator = new RogueLevelGenerator(generatorParameters);
-			this.currentLevel = this.levelGenerator.Generate();
-			this.levelRenderer = new RogueLevelRenderer(this.console, this.currentLevel);
-			this.levelRenderer.RenderLevel();
+			this.renderer = new RogueRenderer(this.console);
+
+			this.GenerateLevel();
 		}
 
 		protected virtual void Update()
 		{
 			if (ConsoleKey.Pressed("d"))
 			{
-				this.console.Clear();
-				this.currentLevel = this.levelGenerator.Generate();
-				this.levelRenderer.Level = this.currentLevel;
-				this.levelRenderer.RenderLevel();
+				this.GenerateLevel();
+			}
+
+			if (ConsoleKey.Pressed("9"))
+			{
+				this.console
+					.Cursor.SetPosition(0, 0)
+					.Cursor.SetColor(0x0f)
+					.Write("test");
 			}
 
 			if (ConsoleKey.Pressed("s-q"))
 			{
 				this.run = false;
 			}
+		}
+
+		private void GenerateLevel()
+		{
+			this.console.Clear();
+			this.currentLevel = this.levelGenerator.Generate();
+			this.currentLevel.Characters.Add(this.playerCharacter);
+			this.renderer.Level = this.currentLevel;
+
+			this.playerCharacter.Position = this.currentLevel.TileList
+				.SelectRandom(
+					true,
+					t => t.Type == "floor")
+				.Position;
+
+			this.renderer.RenderLevel();
 		}
 	}
 }

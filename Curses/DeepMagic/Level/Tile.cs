@@ -1,6 +1,7 @@
 ﻿namespace Deep.Magic
 {
 	using System.Collections.Generic;
+	using System.Linq;
 
 	/// <summary>
 	/// Generic ITile implementation.
@@ -8,11 +9,28 @@
 	public class Tile : ITile
 	{
 		private IList<string> tags;
+		private Coordinate position;
 
-		public Tile()
+		public Tile(string type, Coordinate position, bool solid = false)
 		{
+			this.Type = type;
+			this.position = new Coordinate(position);
 			this.tags = new List<string>();
+			this.Solid = solid;
 		}
+
+		public Tile Clone()
+		{
+			var tile = new Tile(this.Type, this.position, this.Solid);
+			tile.AddTags(tags.ToArray());
+			return tile;
+		}
+
+		public string Type { get; set; }
+
+		public bool Solid { get; set; }
+
+		public Coordinate Position { get { return this.position; } }
 
 		public bool HasTag(string tag)
 		{
@@ -22,6 +40,7 @@
 		public ITile AddTag(string tag)
 		{
 			tag = tag.ToLower();
+
 			if (!this.HasTag(tag))
 			{
 				this.tags.Add(tag);

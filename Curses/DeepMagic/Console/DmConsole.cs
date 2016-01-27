@@ -159,7 +159,7 @@
 					this.OutputHandle,
 					attributes,
 					1,
-					new NativeMethods.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
+					new NativeMethods.Coord { X = (short)x, Y = (short)y },
 					out trash);
 				this.buffer[x, y].Attributes = attributes;
 			}

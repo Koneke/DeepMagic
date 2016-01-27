@@ -11,5 +11,11 @@
 		ITile RemoveTag(string tag);
 
 		ITile RemoveTags(params string[] tag);
+
+		string Type { get; set; }
+
+		bool Solid { get; set; }
+
+		Coordinate Position { get; }
 	}
 }

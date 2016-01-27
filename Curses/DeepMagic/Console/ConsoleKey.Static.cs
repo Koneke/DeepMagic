@@ -39,7 +39,9 @@
 			bool shift = false;
 
 			char keyChar = key.KeyChar;
-			if (keyChar <= 'a')
+
+			// lower case it
+			if (keyChar >= 'A' && keyChar <= 'Z')
 			{
 				keyChar += (char)('a' - 'A');
 			}

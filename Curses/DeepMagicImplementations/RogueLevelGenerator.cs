@@ -88,17 +88,20 @@
 					for (var y = 0; y < room.Size.Y; y++)
 					{
 						ITile tile;
+						Coordinate coordinate = new Coordinate(
+							room.Position.X + x,
+							room.Position.Y + y);
 
 						if (x == 0 || y == 0 || x == room.Size.X - 1 || y == room.Size.Y - 1)
 						{
-							tile = new Tile().AddTags("wall", "visionblocker");
+							tile = new Tile("wall", coordinate, true).AddTag("visionblocker");
 						}
 						else
 						{
-							tile = new Tile().AddTag("floor");
+							tile = new Tile("floor", coordinate);
 						}
 
-						level.SetTile(room.Position + new Coordinate(x, y), tile);
+						level.SetTile(coordinate, tile);
 					}
 				}
 			}
@@ -237,7 +240,7 @@
 
 			var current = new Coordinate(startPoint);
 			System.Action drawAtCurrent = () =>
-				level.SetTile(current, new Tile().AddTag("passage"));
+				level.SetTile(current, new Tile("passage", current));
 
 			while (distance > 0)
 			{
@@ -256,14 +259,14 @@
 				distance--;
 			}
 
-			var startDoor = new Tile().AddTag("door");
+			var startDoor = new Tile("door", startPoint);
 			startDoor.AddTag(DmRandom.Next(2) == 0
 				? "open"
 				: "closed");
 
 			level.SetTile(startPoint, startDoor);
 
-			var endDoor = new Tile().AddTag("door");
+			var endDoor = new Tile("door", endPoint);
 			endDoor.AddTag(DmRandom.Next(2) == 0
 				? "open"
 				: "closed");

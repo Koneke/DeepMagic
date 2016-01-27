@@ -1,6 +1,6 @@
 ﻿namespace Deep.Magic
 {
-	public class Coordinate
+	public struct Coordinate
 	{
 		public Coordinate(int x, int y)
 		{

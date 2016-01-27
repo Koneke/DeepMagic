@@ -1,6 +1,6 @@
 ﻿namespace Deep.Magic
 {
-	public interface ILevelRenderer
+	public interface IGameRenderer
 	{
 		ILevel Level { get; set; }
 

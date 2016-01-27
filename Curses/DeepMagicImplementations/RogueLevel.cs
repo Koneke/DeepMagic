@@ -9,8 +9,10 @@
 		{
 			this.Size = levelSize;
 			this.Tiles = new ITile[levelSize.X, levelSize.Y];
+			this.TileList = new List<ITile>();
 			this.Rooms = new List<Room>();
 			this.Passages = new List<Passage>();
+			this.Characters = new List<Character>();
 		}
 
 		public Coordinate Size { get; private set; }
@@ -19,7 +21,11 @@
 
 		public List<Passage> Passages { get; private set; }
 
+		public IList<ITile> TileList { get; set; }
+
 		public ITile[,] Tiles { get; private set; }
+
+		public IList<Character> Characters { get; set; }
 
 		public ITile TileAt(Coordinate coordinate)
 		{
@@ -28,6 +34,18 @@
 
 		public void SetTile(Coordinate coordinate, ITile tile)
 		{
+			var current = this.Tiles[coordinate.X, coordinate.Y];
+
+			if (current != null)
+			{
+				this.TileList.Remove(current);
+			}
+
+			if (tile != null)
+			{
+				this.TileList.Add(tile);
+			}
+
 			this.Tiles[coordinate.X, coordinate.Y] = tile;
 		}
 

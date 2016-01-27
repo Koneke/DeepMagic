@@ -73,7 +73,7 @@
 				throw new Exception("No valid element.");
 			}
 
-			return result.Shuffle()[0];
+			return result[DmRandom.Next(result.Count)];
 		}
 
 		public static List<Tuple<T, int>> RunTimeLengthEncoding<T>(this IList<T> source) where T : IComparable

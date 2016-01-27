@@ -3,7 +3,7 @@
 	using System.Collections.Generic;
 	using Deep.Magic;
 
-	public class RogueLevelRenderer : ILevelRenderer
+	public class RogueRenderer : IGameRenderer
 	{
 		private DmConsole console;
 
@@ -25,10 +25,9 @@
 			{ TileType.OpenDoor, 0x07 },
 		};
 
-		public RogueLevelRenderer(DmConsole console, ILevel level)
+		public RogueRenderer(DmConsole console)
 		{
 			this.console = console;
-			this.Level = level;
 		}
 
 		private enum TileType
@@ -56,6 +55,11 @@
 					this.RenderTile(new Coordinate(x, y));
 				}
 			}
+
+			foreach (Character character in Level.Characters)
+			{
+				this.RenderCharacter(character);
+			}
 		}
 
 		private void RenderTile(Coordinate tilePosition)
@@ -75,28 +79,33 @@
 				.Write(this.tileAppearances[tileType]);
 		}
 
+		private void RenderCharacter(Character character)
+		{
+			this.console
+				.Cursor.SetPosition(
+					(short)character.Position.X,
+					(short)character.Position.Y)
+				.Cursor.SetColor(0x0f)
+				.Write('@');
+		}
+
 		private TileType GetTileType(ITile tile)
 		{
-			if (tile.HasTag("floor"))
+			switch (tile.Type)
 			{
-				return TileType.Floor;
+				case "floor":
+					return TileType.Floor;
+				case "wall":
+					return TileType.Wall;
+				case "passage":
+					return TileType.Passage;
+				case "door":
+					return tile.HasTag("open")
+						? TileType.OpenDoor
+						: TileType.Door;
+				default:
+					throw new System.ArgumentException();
 			}
-			else if (tile.HasTag("wall"))
-			{
-				return TileType.Wall;
-			}
-			else if (tile.HasTag("passage"))
-			{
-				return TileType.Passage;
-			}
-			else if (tile.HasTag("door"))
-			{
-				return tile.HasTag("open")
-					? TileType.OpenDoor
-					: TileType.Door;
-			}
-
-			throw new System.ArgumentException();
 		}
 	}
 }
