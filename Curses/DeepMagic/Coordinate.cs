@@ -28,6 +28,56 @@
 			return new Coordinate(a.X - b.X, a.Y - b.Y);
 		}
 
+		public static Coordinate FromNumpad(char numpadNumber)
+		{
+			int x;
+			int y;
+
+			switch (numpadNumber)
+			{
+				case '1':
+					x = -1;
+					y = 1;
+					break;
+				case '2':
+					x = 0;
+					y = 1;
+					break;
+				case '3':
+					x = 1;
+					y = 1;
+					break;
+				case '4':
+					x = -1;
+					y = 0;
+					break;
+				case '5':
+					x = 1;
+					y = 0;
+					break;
+				case '6':
+					x = 1;
+					y = 0;
+					break;
+				case '7':
+					x = -1;
+					y = -1;
+					break;
+				case '8':
+					x = 0;
+					y = -1;
+					break;
+				case '9':
+					x = 1;
+					y = -1;
+					break;
+				default:
+					throw new System.ArgumentException();
+			}
+
+			return new Coordinate(x, y);
+		}
+
 		public static int AbsoluteDistance(Coordinate a, Coordinate b)
 		{
 			var difference = a - b;

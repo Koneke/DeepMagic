@@ -19,18 +19,24 @@
 			this.Solid = solid;
 		}
 
-		public Tile Clone()
-		{
-			var tile = new Tile(this.Type, this.position, this.Solid);
-			tile.AddTags(tags.ToArray());
-			return tile;
-		}
-
 		public string Type { get; set; }
 
 		public bool Solid { get; set; }
 
-		public Coordinate Position { get { return this.position; } }
+		public Coordinate Position
+		{
+			get
+			{
+				return this.position;
+			}
+		}
+
+		public Tile Clone()
+		{
+			var tile = new Tile(this.Type, this.position, this.Solid);
+			tile.AddTags(this.tags.ToArray());
+			return tile;
+		}
 
 		public bool HasTag(string tag)
 		{

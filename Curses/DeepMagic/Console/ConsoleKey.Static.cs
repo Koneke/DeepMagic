@@ -63,12 +63,26 @@
 				key.Shift == shift;
 		}
 
-		public static bool Pressed(string shorthand)
+		public static ConsoleKey Pressed(string shorthand)
 		{
 			lock (ConsoleKey.messageQueue)
 			{
-				return ConsoleKey.messageQueue.Any(key => ConsoleKey.Compare(key, shorthand));
+				return ConsoleKey.messageQueue.FirstOrDefault(key => ConsoleKey.Compare(key, shorthand));
 			}
+		}
+
+		public static ConsoleKey Any(params string[] shorthands)
+		{
+			foreach (var shorthand in shorthands)
+			{
+				var pressed = Pressed(shorthand);
+				if (pressed != null)
+				{
+					return pressed;
+				}
+			}
+
+			return null;
 		}
 
 		public static void Clear()

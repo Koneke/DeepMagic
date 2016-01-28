@@ -1,6 +1,6 @@
 ﻿namespace Deep.Magic
 {
-	using Deep.Magic.Implementations.Rogue;
+	using Implementations.Rogue;
 
 	public class Game
 	{
@@ -52,20 +52,32 @@
 
 		protected virtual void Update()
 		{
-			if (ConsoleKey.Pressed("d"))
+			if (ConsoleKey.Pressed("d") != null)
 			{
 				this.GenerateLevel();
 			}
 
-			if (ConsoleKey.Pressed("9"))
+			var numpadKeys = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+			var directionKey = ConsoleKey.Any(numpadKeys);
+
+			if (directionKey != null)
 			{
-				this.console
-					.Cursor.SetPosition(0, 0)
-					.Cursor.SetColor(0x0f)
-					.Write("test");
+				var delta = Coordinate.FromNumpad(directionKey.KeyChar);
+				var tileAt = currentLevel.TileAt(playerCharacter.Position + delta);
+				if (tileAt != null && !tileAt.Solid)
+				{
+					playerCharacter.Position += Coordinate.FromNumpad(directionKey.KeyChar);
+
+					// Obviously not the optimal way of doing things, but it's actually clever enough
+					// to not to the actual drawing if we already have the right stuff in the buffer.
+					// The actual calculations for the rendering are pretty much free it's the actual
+					// drawing that takes time.
+					this.renderer.RenderLevel();
+				}
 			}
 
-			if (ConsoleKey.Pressed("s-q"))
+			if (ConsoleKey.Pressed("s-q") != null)
 			{
 				this.run = false;
 			}

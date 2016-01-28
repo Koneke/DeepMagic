@@ -14,6 +14,7 @@
 			{ TileType.Passage,  '#' },
 			{ TileType.Door,     '+' },
 			{ TileType.OpenDoor, '/' },
+			{ TileType.Stairs,   '%' },
 		};
 
 		private Dictionary<TileType, ushort> tileColors = new Dictionary<TileType, ushort>()
@@ -23,6 +24,7 @@
 			{ TileType.Passage,  0x07 },
 			{ TileType.Door,     0x07 },
 			{ TileType.OpenDoor, 0x07 },
+			{ TileType.Stairs,   0x07 },
 		};
 
 		public RogueRenderer(DmConsole console)
@@ -36,7 +38,8 @@
 			Wall,
 			Passage,
 			Door,
-			OpenDoor
+			OpenDoor,
+			Stairs,
 		}
 
 		public ILevel Level { get; set; }
@@ -56,7 +59,7 @@
 				}
 			}
 
-			foreach (Character character in Level.Characters)
+			foreach (Character character in this.Level.Characters)
 			{
 				this.RenderCharacter(character);
 			}
@@ -103,6 +106,8 @@
 					return tile.HasTag("open")
 						? TileType.OpenDoor
 						: TileType.Door;
+				case "stairs":
+					return TileType.Stairs;
 				default:
 					throw new System.ArgumentException();
 			}

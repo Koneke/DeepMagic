@@ -31,6 +31,7 @@
 
 			this.DoRooms(rogueLevel);
 			this.DoCorridors(rogueLevel);
+			this.GenerateStairs(rogueLevel);
 
 			return rogueLevel;
 		}
@@ -274,6 +275,14 @@
 			level.SetTile(
 				endPoint,
 				endDoor);
+		}
+
+		private void GenerateStairs(RogueLevel level)
+		{
+			var stairsTile = level.TileList.SelectRandom(
+				true,
+				t => t.Type == "floor");
+			stairsTile.Type = "stairs";
 		}
 	}
 }
