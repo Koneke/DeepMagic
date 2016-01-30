@@ -17,7 +17,7 @@
 				.SetParameter(RogueLevelGenerator.ParameterNames.VerticalCellCount, 3);
 
 			this.LevelGenerator = new RogueLevelGenerator(generatorParameters);
-			this.Renderer = new RogueRenderer(this.Console);
+			this.Renderer = new RogueRenderer();
 			this.GenerateLevel();
 		}
 	}

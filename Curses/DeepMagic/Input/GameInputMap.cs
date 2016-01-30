@@ -8,7 +8,7 @@
 
 		public GameInputMap()
 		{
-			mappings = new Dictionary<string, ICharacterAction>();
+			this.mappings = new Dictionary<string, ICharacterAction>();
 		}
 
 		public GameInputMap CreateMapping(string name, ICharacterAction characterAction)

@@ -3,9 +3,12 @@
 	using System.Collections.Generic;
 	using Deep.Magic;
 
+	// Should renderer have a reference to the game?
+	// The game shouldn't know about the renderer tbh.
 	public class RogueRenderer : IGameRenderer
 	{
 		private DmConsole console;
+		private ILevel level;
 
 		private Dictionary<TileType, char> tileAppearances = new Dictionary<TileType, char>()
 		{
@@ -27,9 +30,12 @@
 			{ TileType.Stairs,   0x07 },
 		};
 
-		public RogueRenderer(DmConsole console)
+		public RogueRenderer()
 		{
-			this.console = console;
+			this.console = new DmConsole(80, 25)
+			{
+				IsCursorVisible = false
+			};
 		}
 
 		private enum TileType
@@ -42,7 +48,20 @@
 			Stairs,
 		}
 
-		public ILevel Level { get; set; }
+		public ILevel Level
+		{
+			get
+			{
+				return this.level;
+			}
+			set
+			{
+				// Do a full rerender.
+				this.console.Clear();
+				this.level = value;
+				this.RenderLevel();
+			}
+		}
 
 		public void Clear()
 		{

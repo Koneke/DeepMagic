@@ -4,7 +4,7 @@
 
 	public class InputHandler
 	{
-		Dictionary<string, string> keyMap = new Dictionary<string, string>()
+		private Dictionary<string, string> keyMap = new Dictionary<string, string>()
 		{
 			{ "1", "move:southwest" },
 			{ "b", "move:southwest" },
@@ -24,9 +24,15 @@
 			{ "u", "move:northeast" },
 		};
 
-		DmGame game;
-		Dictionary<string, CharacterActionParameterSet> parameterSets;
-		GameInputMap gameInputMap;
+		private Dictionary<string, string> devCommands = new Dictionary<string, string>()
+		{
+			{ "d", "dev:generate-level" },
+			{ "s-q", "game:quit" }
+		};
+
+		private DmGame game;
+		private Dictionary<string, CharacterActionParameterSet> parameterSets;
+		private GameInputMap gameInputMap;
 
 		public InputHandler(DmGame game)
 		{
@@ -46,10 +52,20 @@
 
 		public void Update()
 		{
-			// Should be here later.
-			// ConsoleKey.PollInput();
+			ConsoleKey.Clear();
+			ConsoleKey.PollInput();
 
-			foreach (var key in keyMap.Keys)
+			foreach (var key in this.devCommands.Keys)
+			{
+				if (ConsoleKey.Pressed(key) == null)
+				{
+					continue;
+				}
+
+				this.game.ReceiveInput(this.devCommands[key]);
+			}
+
+			foreach (var key in this.keyMap.Keys)
 			{
 				if (ConsoleKey.Pressed(key) == null)
 				{
@@ -63,7 +79,7 @@
 
 		private void SendCharacterAction(string mapping)
 		{
-			this.game.ReceiveInput(
+			this.game.ReceiveCharacterInput(
 				this.gameInputMap.GetMapping(mapping),
 				this.GetParameterSet(mapping));
 		}
