@@ -44,16 +44,19 @@
   <ItemGroup>
     <Compile Include="Cancellable.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="CharacterAction.cs" />
     <Compile Include="Console\Color.cs" />
     <Compile Include="Console\DmConsole.cs" />
-    <Compile Include="Console\ConsoleDelta.cs" />
     <Compile Include="Console\ConsoleCursor.cs" />
     <Compile Include="Console\ConsoleKey.cs" />
     <Compile Include="Console\ConsoleKey.Static.cs" />
     <Compile Include="Bindings\Constants.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameInputMap.cs" />
     <Compile Include="IBrain.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="Level\ILevelRenderer.cs" />
     <Compile Include="Level\ILevel.cs" />
     <Compile Include="Level\ILevelGenerator.cs" />

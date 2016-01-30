@@ -1,19 +1,16 @@
 ﻿namespace Deep.Magic
 {
-	using System.Collections.Generic;
-
+	// Should this just be a static class?
 	public partial class DmConsole
 	{
 		private int width;
 		private int height;
 		private ScreenCharacter[,] buffer;
-		private List<Delta> deltas;
 
 		public DmConsole(int width, int height)
 		{
 			this.InitialiseScreen(width, height);
 
-			this.deltas = new List<Delta>();
 			this.InputHandle = NativeMethods.GetStdHandle(Deep.Magic.Constants.StdInput);
 			this.OutputHandle = NativeMethods.GetStdHandle(Deep.Magic.Constants.StdOutput);
 			this.Cursor = new ConsoleCursor(this);
@@ -94,30 +91,6 @@
 
 		public void Update()
 		{
-			foreach (var delta in this.deltas)
-			{
-				if (delta.Check(this.buffer))
-				{
-					uint charactersWritten;
-					NativeMethods.WriteConsole(
-						this.OutputHandle,
-						delta.Text,
-						(uint)delta.Text.Length,
-						out charactersWritten,
-						System.IntPtr.Zero);
-
-					NativeMethods.FillConsoleOutputAttribute(
-						this.OutputHandle,
-						delta.Attributes,
-						(uint)delta.Text.Length,
-						new NativeMethods.Coord { X = this.Cursor.X, Y = this.Cursor.Y },
-						out charactersWritten);
-
-					delta.Write(this.buffer);
-				}
-			}
-
-			this.deltas.Clear();
 		}
 
 		private void InitialiseScreen(int width, int height)

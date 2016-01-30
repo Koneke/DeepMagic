@@ -4,7 +4,13 @@
 	{
 		Character Character { get; }
 
-		void Dance();
+		bool CanApplyCharacterAction(
+			ICharacterAction characterAction,
+			CharacterActionParameterSet parameterSet);
+
+		void ApplyCharacterAction(
+			ICharacterAction characterAction,
+			CharacterActionParameterSet parameterSet);
 	}
 
 	public class PlayerBrain : IBrain
@@ -16,8 +22,22 @@
 
 		public Character Character { get; private set; }
 
-		public void Dance()
+		public bool CanApplyCharacterAction(
+			ICharacterAction characterAction,
+			CharacterActionParameterSet parameterSet)
 		{
+			// Make sure to clone the parameterset so we don't destroy/alter it.
+			// (Probably doesn't matter? but feels like good practice).
+			var clonedSet = parameterSet.Clone().SetParameter("character", this.Character);
+			return characterAction.CanApplyAction(clonedSet);
+		}
+
+		public void ApplyCharacterAction(
+			ICharacterAction characterAction,
+			CharacterActionParameterSet parameterSet)
+		{
+			parameterSet.SetParameter("character", this.Character);
+			characterAction.ApplyAction(parameterSet);
 		}
 	}
 }
