@@ -2,10 +2,12 @@
 {
 	public interface IGameRenderer
 	{
-		ILevel Level { get; set; }
+		DmGame Game { get; set; }
 
 		void Clear();
 
 		void RenderLevel();
+
+		void Update();
 	}
 }

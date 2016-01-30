@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Character\Character.cs" />
+    <Compile Include="Core\GameManager.cs" />
+    <Compile Include="Events\SomethingMovedArgs.cs" />
     <Compile Include="Input\Actions\CharacterAction.cs" />
     <Compile Include="Input\Actions\CharacterActionParameterSet.cs" />
     <Compile Include="Input\Actions\MovementAction.cs" />
@@ -72,6 +74,7 @@
   <ItemGroup>
     <None Include="notes.mkd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

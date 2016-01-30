@@ -1,30 +1,17 @@
 ﻿namespace Deep.Magic
 {
+
 	public class DmGame
 	{
-		private bool run;
+		public event System.EventHandler SomethingMoved;
+
+		public bool Run { get; set; }
 
 		public Character PlayerCharacter { get; set; }
 
 		public ILevel CurrentLevel { get; set; }
 
 		protected ILevelGenerator LevelGenerator { get; set; }
-
-		protected InputHandler InputHandler { get; set; }
-
-		protected IGameRenderer Renderer { get; set; }
-
-		public void Run()
-		{
-			this.run = true;
-			this.Initialise();
-
-			while (this.run)
-			{
-				this.InputHandler.Update();
-				this.Update();
-			}
-		}
 
 		public void ReceiveInput(string command)
 		{
@@ -34,7 +21,7 @@
 					this.GenerateLevel();
 					break;
 				case "game:quit":
-					this.run = false;
+					this.Run = false;
 					break;
 			}
 		}
@@ -51,20 +38,27 @@
 
 		public void Render()
 		{
-			this.Renderer.RenderLevel();
 		}
 
-		protected virtual void Initialise()
+		public void MoveCharacter(Character character, Coordinate destination)
 		{
-			this.InputHandler = new InputHandler(this);
+			var source = character.Position;
+			var args = new SomethingMovedArgs(character, source, destination);
+
+			character.Position = destination;
+			this.SomethingMoved(this, args);
+		}
+
+		public virtual void Initialise()
+		{
 			this.PlayerCharacter = new Character();
 		}
 
-		protected virtual void Update()
+		public virtual void Update()
 		{
 		}
 
-		protected void GenerateLevel()
+		public void GenerateLevel()
 		{
 			this.CurrentLevel = this.LevelGenerator.Generate();
 			this.CurrentLevel.Characters.Add(this.PlayerCharacter);
@@ -74,9 +68,6 @@
 					true,
 					t => t.Type == "floor")
 				.Position;
-
-			// Do this last, so the character is moved when we render.
-			this.Renderer.Level = this.CurrentLevel;
 		}
 	}
 }

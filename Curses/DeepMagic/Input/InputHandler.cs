@@ -72,8 +72,8 @@
 					continue;
 				}
 
-				var characterAction = keyMap[key];
-				SendCharacterAction(characterAction);
+				var characterAction = this.keyMap[key];
+				this.SendCharacterAction(characterAction);
 			}
 		}
 
@@ -86,17 +86,16 @@
 
 		private CharacterActionParameterSet GetParameterSet(string mapping)
 		{
-			return parameterSets[mapping.EzSplit(":")[0]];
+			return this.parameterSets[mapping.EzSplit(":")[0]];
 		}
 
+		// We use this instead of CreateMapping directly to setup our parametersets.
 		private void CreateMapping(string name, ICharacterAction characterAction)
 		{
-			// We use this instead of CreateMapping directly to setup our parametersets.
-
 			var parameterSetKey = name.EzSplit(":")[0];
-			if (!parameterSets.ContainsKey(parameterSetKey))
+			if (!this.parameterSets.ContainsKey(parameterSetKey))
 			{
-				parameterSets[parameterSetKey] = new CharacterActionParameterSet();
+				this.parameterSets[parameterSetKey] = new CharacterActionParameterSet();
 			}
 
 			this.gameInputMap.CreateMapping(name, characterAction);

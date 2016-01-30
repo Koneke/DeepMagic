@@ -3,9 +3,9 @@
 	using Deep.Magic;
 	using Deep.Magic.Implementations.Rogue;
 
-	class Game : DmGame
+	public class Game : DmGame
 	{
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			base.Initialise();
 
@@ -17,7 +17,6 @@
 				.SetParameter(RogueLevelGenerator.ParameterNames.VerticalCellCount, 3);
 
 			this.LevelGenerator = new RogueLevelGenerator(generatorParameters);
-			this.Renderer = new RogueRenderer();
 			this.GenerateLevel();
 		}
 	}

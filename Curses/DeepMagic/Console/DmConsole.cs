@@ -6,6 +6,7 @@
 		private int width;
 		private int height;
 		private ScreenCharacter[,] buffer;
+		private ScreenCharacter[,] flipBuffer;
 
 		public DmConsole(int width, int height)
 		{
@@ -38,11 +39,6 @@
 			}
 		}
 
-		public ScreenCharacter CharacterAt(int x, int y)
-		{
-			return this.buffer[x, y];
-		}
-
 		public void Clear(Deep.Magic.Color clearColor = Deep.Magic.Color.Black)
 		{
 			for (var x = 0; x < this.width; x++)
@@ -52,6 +48,8 @@
 					this.buffer[x, y] = new ScreenCharacter('\0', 0);
 				}
 			}
+
+			System.Array.Copy(this.buffer, this.flipBuffer, this.buffer.Length);
 
 			uint charactersWritten;
 			NativeMethods.FillConsoleOutputAttribute(
@@ -89,8 +87,49 @@
 			return this;
 		}
 
-		public void Update()
+		public void Flush()
 		{
+			uint trash;
+			ScreenCharacter b;
+			ScreenCharacter fb;
+
+			for (var x = 0; x < this.width; x++)
+			{
+				for (var y = 0; y < this.height; y++)
+				{
+					b = this.buffer[x, y];
+					fb = this.flipBuffer[x, y];
+
+					if (b.Character != fb.Character || b.Attributes != fb.Attributes)
+					{
+						Deep.Magic.NativeMethods.SetConsoleCursorPosition(
+							this.OutputHandle,
+							new NativeMethods.Coord { X = (short)x, Y = (short)y });
+					}
+
+					if (b.Character != fb.Character)
+					{
+						Deep.Magic.NativeMethods.WriteConsole(
+							this.OutputHandle,
+							string.Empty + fb.Character,
+							1,
+							out trash,
+							System.IntPtr.Zero);
+					}
+
+					if (b.Attributes != fb.Attributes)
+					{
+						NativeMethods.FillConsoleOutputAttribute(
+							this.OutputHandle,
+							fb.Attributes,
+							1,
+							new NativeMethods.Coord { X = (short)x, Y = (short)y },
+							out trash);
+					}
+				}
+			}
+
+			System.Array.Copy(this.flipBuffer, this.buffer, this.flipBuffer.Length);
 		}
 
 		private void InitialiseScreen(int width, int height)
@@ -98,6 +137,7 @@
 			this.width = width;
 			this.height = height;
 			this.buffer = new ScreenCharacter[width, height]; 
+			this.flipBuffer = new ScreenCharacter[width, height]; 
 
 			for (var x = 0; x < this.width; x++)
 			{
@@ -106,40 +146,18 @@
 					this.buffer[x, y] = new ScreenCharacter(' ', 0);
 				}
 			}
+
+			System.Array.Copy(this.buffer, this.flipBuffer, this.buffer.Length);
 		}
 
 		private void WriteAt(int x, int y, char character, ushort attributes)
 		{
-			Deep.Magic.NativeMethods.SetConsoleCursorPosition(
-				this.OutputHandle,
-				new NativeMethods.Coord { X = (short)x, Y = (short)y });
-
-			uint trash;
-			if (this.buffer[x, y].Character != character)
-			{
-				Deep.Magic.NativeMethods.WriteConsole(
-					this.OutputHandle,
-					string.Empty + character,
-					1,
-					out trash,
-					System.IntPtr.Zero);
-				this.buffer[x, y].Character = character;
-			}
-
-			if (this.buffer[x, y].Attributes != attributes)
-			{
-				NativeMethods.FillConsoleOutputAttribute(
-					this.OutputHandle,
-					attributes,
-					1,
-					new NativeMethods.Coord { X = (short)x, Y = (short)y },
-					out trash);
-				this.buffer[x, y].Attributes = attributes;
-			}
+			this.flipBuffer[x, y].Character = character;
+			this.flipBuffer[x, y].Attributes = attributes;
 		}
 
 		// Should this really be here, or in the namespace..?
-		public class ScreenCharacter
+		private struct ScreenCharacter
 		{
 			public ScreenCharacter(char character, ushort attributes)
 			{

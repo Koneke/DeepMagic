@@ -8,7 +8,6 @@
 	public class RogueRenderer : IGameRenderer
 	{
 		private DmConsole console;
-		private ILevel level;
 
 		private Dictionary<TileType, char> tileAppearances = new Dictionary<TileType, char>()
 		{
@@ -30,8 +29,10 @@
 			{ TileType.Stairs,   0x07 },
 		};
 
-		public RogueRenderer()
+		public RogueRenderer(DmGame game)
 		{
+			this.Game = game;
+
 			this.console = new DmConsole(80, 25)
 			{
 				IsCursorVisible = false
@@ -48,18 +49,13 @@
 			Stairs,
 		}
 
-		public ILevel Level
+		public DmGame Game { get; set; }
+
+		private ILevel Level
 		{
 			get
 			{
-				return this.level;
-			}
-			set
-			{
-				// Do a full rerender.
-				this.console.Clear();
-				this.level = value;
-				this.RenderLevel();
+				return this.Game.CurrentLevel;
 			}
 		}
 
@@ -70,6 +66,12 @@
 
 		public void RenderLevel()
 		{
+			var level = this.Game.CurrentLevel;
+			if (level == null)
+			{
+				return;
+			}
+
 			for (var x = 0; x < this.Level.Size.X; x++)
 			{
 				for (var y = 0; y < this.Level.Size.Y; y++)
@@ -82,6 +84,13 @@
 			{
 				this.RenderCharacter(character);
 			}
+
+			this.console.Flush();
+		}
+
+		public void Update()
+		{
+			this.RenderLevel();
 		}
 
 		private void RenderTile(Coordinate tilePosition)
