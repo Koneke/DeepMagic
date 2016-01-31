@@ -46,12 +46,12 @@
     <Compile Include="Core\GameManager.cs" />
     <Compile Include="Events\ChangedLevelArgs.cs" />
     <Compile Include="Events\SomethingMovedArgs.cs" />
-    <Compile Include="Input\Actions\DevAction.cs" />
-    <Compile Include="Input\Actions\ICharacterAction.cs" />
-    <Compile Include="Input\Actions\CharacterActionParameterSet.cs" />
-    <Compile Include="Input\Actions\IInputAction.cs" />
-    <Compile Include="Input\Actions\InputAction.cs" />
-    <Compile Include="Input\Actions\MovementAction.cs" />
+    <Compile Include="Input\Actions\Actions\DevAction.cs" />
+    <Compile Include="Input\Actions\Base\ICharacterAction.cs" />
+    <Compile Include="Input\Actions\Base\CharacterActionParameterSet.cs" />
+    <Compile Include="Input\Actions\Base\IInputAction.cs" />
+    <Compile Include="Input\Actions\Actions\InputAction.cs" />
+    <Compile Include="Input\Actions\Actions\MovementAction.cs" />
     <Compile Include="Console\Color.cs" />
     <Compile Include="Console\DmConsole.cs" />
     <Compile Include="Console\ConsoleCursor.cs" />
@@ -59,7 +59,7 @@
     <Compile Include="Console\ConsoleKey.Static.cs" />
     <Compile Include="Bindings\Constants.cs" />
     <Compile Include="Core\Coordinate.cs" />
-    <Compile Include="Input\Actions\QuitAction.cs" />
+    <Compile Include="Input\Actions\Actions\QuitAction.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Core\Game.cs" />
     <Compile Include="Input\GameInputMap.cs" />
