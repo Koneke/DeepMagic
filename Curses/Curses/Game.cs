@@ -24,22 +24,13 @@
 				.AddSlot("hand")
 				.AddSlot("hand");
 
-			var item = new Item("leather armor");
-			item.EquipSlots.Add("body");
-			item.Attributes.SetAttribute("armor", 3);
+			var template = new ItemTemplate("leather armor");
+			template.AddEquipSlot("body");
+			template.Attributes.SetAttribute("armor", 3);
 
-			var armor = this.PlayerCharacter.GetAttribute("armor", 0);
+			var item = new Item(template);
 
-			var a = this.PlayerCharacter.HasAttribute("armor");
 			this.PlayerCharacter.PaperDoll.EquipItem(item);
-			var b = this.PlayerCharacter.HasAttribute("armor");
-
-			var armor2 = this.PlayerCharacter.GetAttribute("armor", 0);
-
-			this.PlayerCharacter.SetAttribute("armor", 2);
-
-			var armor3 = this.PlayerCharacter.GetAttribute("armor", 0);
-			var c = 0;
 		}
 	}
 }
