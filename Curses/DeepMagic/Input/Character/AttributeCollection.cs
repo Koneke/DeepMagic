@@ -5,34 +5,70 @@
 	public class AttributeCollection
 	{
 		private Dictionary<string, double> attributes;
+		private AttributeCollection parent;
 
-		public AttributeCollection()
+		public AttributeCollection(AttributeCollection parent = null)
 		{
 			this.attributes = new Dictionary<string, double>();
+			this.parent = parent;
 		}
 
-		public AttributeCollection SetAttribute(string name, double attributeValue)
+		public AttributeCollection SetAttribute(string attribute, double attributeValue)
 		{
-			name = name.ToLower();
+			attribute = attribute.ToLower();
 
-			if (!this.attributes.ContainsKey(name))
+			if (!this.attributes.ContainsKey(attribute))
 			{
-				this.attributes.Add(name, 0);
+				this.attributes.Add(attribute, 0);
 			}
 
-			this.attributes[name] = attributeValue;
+			this.attributes[attribute] = attributeValue;
 
 			return this;
 		}
 
-		public bool HasAttribute(string name)
+		public AttributeCollection ModifyAttribute(string attribute, double delta)
 		{
-			return this.attributes.ContainsKey(name.ToLower());
+			attribute = attribute.ToLower();
+
+			this.attributes[attribute] += delta;
+
+			return this;
 		}
 
-		public double GetAttribute(string name)
+		public bool HasAttribute(string attribute)
 		{
-			return this.attributes[name.ToLower()];
+			return this.HasParentAttribute(attribute) || this.attributes.ContainsKey(attribute.ToLower());
+		}
+
+		private bool HasParentAttribute(string attribute)
+		{
+			return parent != null && parent.HasAttribute(attribute);
+		}
+
+		public double GetAttribute(string attribute, double? defaultValue = null)
+		{
+			attribute = attribute.ToLower();
+			double? attributeValue = null;
+
+			if (this.attributes.ContainsKey(attribute))
+			{
+				attributeValue = (attributeValue ?? 0) + this.attributes[attribute];
+			}
+
+			if (this.HasParentAttribute(attribute))
+			{
+				attributeValue = (attributeValue ?? 0) + this.parent.GetAttribute(attribute);
+			}
+
+			attributeValue = attributeValue ?? defaultValue;
+
+			if (!attributeValue.HasValue)
+			{
+				throw new System.Exception();
+			}
+
+			return attributeValue.Value;
 		}
 	}
 }

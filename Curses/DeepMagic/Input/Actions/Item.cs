@@ -52,7 +52,7 @@
 		public Item(ItemTemplate template)
 		{
 			this.Template = template;
-			this.Attributes = new AttributeCollection();
+			this.Attributes = new AttributeCollection(template.Attributes);
 		}
 
 		public ItemTemplate Template { get; private set; }

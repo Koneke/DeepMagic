@@ -20,12 +20,18 @@
 			this.GenerateLevel();
 
 			this.PlayerCharacter.PaperDoll
-				.AddSlot("body")
+				.AddSlot("head")
+				.AddSlot("neck")
+				.AddSlot("torso")
 				.AddSlot("hand")
-				.AddSlot("hand");
+				.AddSlot("hand")
+				.AddSlot("finger")
+				.AddSlot("finger")
+				.AddSlot("legs")
+				.AddSlot("feet");
 
 			var template = new ItemTemplate("leather armor");
-			template.AddEquipSlot("body");
+			template.AddEquipSlot("torso");
 			template.Attributes.SetAttribute("armor", 3);
 
 			var item = new Item(template);

@@ -1,7 +1,6 @@
 ﻿namespace Deep.Magic
 {
 	using System.Collections.Generic;
-	using System.Linq;
 
 	public class PaperDoll
 	{
@@ -66,7 +65,6 @@
 				this.freeSlots.Remove(slot);
 			}
 
-			this.freeSlots = this.freeSlots.Except(item.EquipSlots).ToList();
 			this.Items.Add(item);
 		}
 
