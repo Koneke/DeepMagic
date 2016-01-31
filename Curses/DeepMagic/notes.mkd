@@ -1,6 +1,2 @@
 ﻿## Tiles and tags
-Right now, it feels a bit stuffy with having to load a buttload of tags onto tiles, both for what you'd consider tile *type*, and for what you'd consider more attributes of the tag. I.e., a door tile has both the tag `door`, and the tags `open` or `closed`. Ideally we want these a bit separate.
-
-At the moment, there's two ways I see of doing this. Either, we let our level renderers only handle specific ITile implementations (e.g. the RogueLevelRenderer would only handle RogueTiles), unless the implementer feels like implementing others specifically, or we add `Type` to `ITile`. I'm leaning towards the latter, since tile type is probably not going to be a rare occurence. It will still only be a string (an upside of doing a specific implementation would be the ability to do it with enums) just like the tags, but them being separate would probably be clearer intentwise. So that's what'll probably happen.
-
 Side thought, stuff like "dark" tiles in dark rooms (a la rogue), give the tile a reference to the room it is in (since dark is a room flag), and just let it dynamically return whether or not it's dark, based on whether or not the room is? Since that doesn't require the level renderer to know anything about the rooms or their flags.
