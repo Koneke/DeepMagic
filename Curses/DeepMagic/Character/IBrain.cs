@@ -6,11 +6,11 @@
 
 		bool CanApplyCharacterAction(
 			ICharacterAction characterAction,
-			CharacterActionParameterSet parameterSet);
+			InputActionParameterSet parameterSet);
 
 		void ApplyCharacterAction(
 			ICharacterAction characterAction,
-			CharacterActionParameterSet parameterSet);
+			InputActionParameterSet parameterSet);
 	}
 
 	public class PlayerBrain : IBrain
@@ -24,7 +24,7 @@
 
 		public bool CanApplyCharacterAction(
 			ICharacterAction characterAction,
-			CharacterActionParameterSet parameterSet)
+			InputActionParameterSet parameterSet)
 		{
 			// Make sure to clone the parameterset so we don't destroy/alter it.
 			// (Probably doesn't matter? but feels like good practice).
@@ -34,7 +34,7 @@
 
 		public void ApplyCharacterAction(
 			ICharacterAction characterAction,
-			CharacterActionParameterSet parameterSet)
+			InputActionParameterSet parameterSet)
 		{
 			parameterSet.SetParameter("character", this.Character);
 			characterAction.ApplyAction(parameterSet);

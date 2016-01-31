@@ -11,7 +11,7 @@
 			this.direction = direction;
 		}
 
-		public bool CanApplyAction(CharacterActionParameterSet parameters)
+		public bool CanApplyAction(InputActionParameterSet parameters)
 		{
 			var level = this.game.CurrentLevel;
 			var character = parameters.GetParameter<Character>("character");
@@ -20,11 +20,10 @@
 			return !(tile == null || tile.Solid);
 		}
 
-		public void ApplyAction(CharacterActionParameterSet parameters)
+		public void ApplyAction(InputActionParameterSet parameters)
 		{
 			var character = parameters.GetParameter<Character>("character");
-			character.Position += this.direction;
-			this.game.Render();
+			this.game.MoveCharacter(character, character.Position + this.direction);
 		}
 	}
 }

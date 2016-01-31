@@ -21,7 +21,6 @@
 			while (this.game.Run)
 			{
 				this.inputHandler.Update();
-				this.game.Update();
 				this.renderer.Update();
 			}
 		}

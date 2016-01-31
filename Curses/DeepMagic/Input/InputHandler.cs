@@ -22,48 +22,43 @@
 			{ "k", "move:north" },
 			{ "9", "move:northeast" },
 			{ "u", "move:northeast" },
-		};
-
-		private Dictionary<string, string> devCommands = new Dictionary<string, string>()
-		{
 			{ "d", "dev:generate-level" },
 			{ "s-q", "game:quit" }
 		};
 
 		private DmGame game;
-		private Dictionary<string, CharacterActionParameterSet> parameterSets;
-		private GameInputMap gameInputMap;
+		private Dictionary<string, ICharacterAction> characterActions = new Dictionary<string, ICharacterAction>();
+		private Dictionary<string, InputAction> inputActions = new Dictionary<string, InputAction>();
+		private Dictionary<string, InputActionParameterSet> parameterSets;
 
 		public InputHandler(DmGame game)
 		{
 			this.game = game;
-			this.parameterSets = new Dictionary<string, CharacterActionParameterSet>();
-			this.gameInputMap = new GameInputMap();
 
-			this.CreateMapping("move:north",     new MovementAction(this.game, Coordinate.North));
-			this.CreateMapping("move:northeast", new MovementAction(this.game, Coordinate.NorthEast));
-			this.CreateMapping("move:east",      new MovementAction(this.game, Coordinate.East));
-			this.CreateMapping("move:southeast", new MovementAction(this.game, Coordinate.SouthEast));
-			this.CreateMapping("move:south",     new MovementAction(this.game, Coordinate.South));
-			this.CreateMapping("move:southwest", new MovementAction(this.game, Coordinate.SouthWest));
-			this.CreateMapping("move:west",      new MovementAction(this.game, Coordinate.West));
-			this.CreateMapping("move:northwest", new MovementAction(this.game, Coordinate.NorthWest));
+			this.parameterSets = new Dictionary<string, InputActionParameterSet>();
+			this.parameterSets.Add("move", new InputActionParameterSet());
+			this.parameterSets.Add("dev", new InputActionParameterSet());
+			this.parameterSets.Add("game", new InputActionParameterSet());
+
+			this.characterActions = new Dictionary<string, ICharacterAction>();
+			this.characterActions.Add("move:north",     new MovementAction(this.game, Coordinate.North));
+			this.characterActions.Add("move:northeast", new MovementAction(this.game, Coordinate.NorthEast));
+			this.characterActions.Add("move:east",      new MovementAction(this.game, Coordinate.East));
+			this.characterActions.Add("move:southeast", new MovementAction(this.game, Coordinate.SouthEast));
+			this.characterActions.Add("move:south",     new MovementAction(this.game, Coordinate.South));
+			this.characterActions.Add("move:southwest", new MovementAction(this.game, Coordinate.SouthWest));
+			this.characterActions.Add("move:west",      new MovementAction(this.game, Coordinate.West));
+			this.characterActions.Add("move:northwest", new MovementAction(this.game, Coordinate.NorthWest));
+
+			this.inputActions = new Dictionary<string, InputAction>();
+			this.inputActions.Add("game:quit", new QuitAction(this.game));
+			this.inputActions.Add("dev:generate-level", new DevAction(this.game, "generate-level"));
 		}
 
 		public void Update()
 		{
 			ConsoleKey.Clear();
 			ConsoleKey.PollInput();
-
-			foreach (var key in this.devCommands.Keys)
-			{
-				if (ConsoleKey.Pressed(key) == null)
-				{
-					continue;
-				}
-
-				this.game.ReceiveInput(this.devCommands[key]);
-			}
 
 			foreach (var key in this.keyMap.Keys)
 			{
@@ -72,33 +67,45 @@
 					continue;
 				}
 
-				var characterAction = this.keyMap[key];
-				this.SendCharacterAction(characterAction);
+				var mapping = this.keyMap[key];
+
+				if (this.inputActions.ContainsKey(mapping))
+				{
+					this.ApplyAction(mapping);
+				}
+				else if (this.characterActions.ContainsKey(mapping))
+				{
+					this.ApplyCharacterAction(mapping);
+				}
 			}
 		}
 
-		private void SendCharacterAction(string mapping)
+		private void ApplyAction(string mapping)
 		{
-			this.game.ReceiveCharacterInput(
-				this.gameInputMap.GetMapping(mapping),
-				this.GetParameterSet(mapping));
+			var action = this.inputActions[mapping];
+			var parameterSet = this.GetParameterSet(mapping);
+
+			action.ApplyAction(parameterSet);
 		}
 
-		private CharacterActionParameterSet GetParameterSet(string mapping)
+		private void ApplyCharacterAction(string mapping)
+		{
+			var action = this.characterActions[mapping];
+			var parameterSet = this.GetParameterSet(mapping).Clone();
+
+			parameterSet.SetParameter("character", this.game.PlayerCharacter);
+
+			if (action.CanApplyAction(parameterSet))
+			{
+				action.ApplyAction(parameterSet);
+			}
+
+			// else ???
+		}
+
+		private InputActionParameterSet GetParameterSet(string mapping)
 		{
 			return this.parameterSets[mapping.EzSplit(":")[0]];
-		}
-
-		// We use this instead of CreateMapping directly to setup our parametersets.
-		private void CreateMapping(string name, ICharacterAction characterAction)
-		{
-			var parameterSetKey = name.EzSplit(":")[0];
-			if (!this.parameterSets.ContainsKey(parameterSetKey))
-			{
-				this.parameterSets[parameterSetKey] = new CharacterActionParameterSet();
-			}
-
-			this.gameInputMap.CreateMapping(name, characterAction);
 		}
 	}
 }

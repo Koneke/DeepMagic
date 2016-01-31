@@ -3,27 +3,27 @@
 	using System;
 	using System.Collections.Generic;
 
-	public class CharacterActionParameterSet
+	public class InputActionParameterSet
 	{
 		private Dictionary<string, Type> parameterTypes;
 		private Dictionary<string, object> parameters;
 
-		public CharacterActionParameterSet()
+		public InputActionParameterSet()
 		{
 			this.parameterTypes = new Dictionary<string, Type>();
 			this.parameters = new Dictionary<string, object>();
 		}
 
-		public CharacterActionParameterSet Clone()
+		public InputActionParameterSet Clone()
 		{
-			var clone = new CharacterActionParameterSet();
+			var clone = new InputActionParameterSet();
 			clone.parameterTypes = new Dictionary<string, Type>(this.parameterTypes);
 			clone.parameters = new Dictionary<string, object>(this.parameters);
 
 			return clone;
 		}
 
-		public CharacterActionParameterSet SetParameter<T>(string name, T parameter)
+		public InputActionParameterSet SetParameter<T>(string name, T parameter)
 		{
 			name = name.ToLower();
 

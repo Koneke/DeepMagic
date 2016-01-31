@@ -32,6 +32,7 @@
 		public RogueRenderer(DmGame game)
 		{
 			this.Game = game;
+			this.Game.ChangedLevel += this.Game_ChangedLevel;
 
 			this.console = new DmConsole(80, 25)
 			{
@@ -91,6 +92,11 @@
 		public void Update()
 		{
 			this.RenderLevel();
+		}
+
+		private void Game_ChangedLevel(object sender, ChangedLevelArgs e)
+		{
+			this.Clear();
 		}
 
 		private void RenderTile(Coordinate tilePosition)

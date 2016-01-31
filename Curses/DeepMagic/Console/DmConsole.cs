@@ -39,7 +39,7 @@
 			}
 		}
 
-		public void Clear(Deep.Magic.Color clearColor = Deep.Magic.Color.Black)
+		public void Clear(Color clearColor = Deep.Magic.Color.Black)
 		{
 			for (var x = 0; x < this.width; x++)
 			{
@@ -52,6 +52,13 @@
 			System.Array.Copy(this.buffer, this.flipBuffer, this.buffer.Length);
 
 			uint charactersWritten;
+			NativeMethods.FillConsoleOutputCharacter(
+				this.OutputHandle,
+				' ',
+				(uint)(this.width * this.height),
+				new NativeMethods.Coord { X = 0, Y = 0 },
+				out charactersWritten);
+
 			NativeMethods.FillConsoleOutputAttribute(
 				this.OutputHandle,
 				(ushort)clearColor,
